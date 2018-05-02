@@ -1,0 +1,1479 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"move",
+				"moveRightTo"
+			],
+			[
+				"mov",
+				"moveToHightest"
+			],
+			[
+				"red",
+				"redistributeHighest"
+			],
+			[
+				"LEn",
+				"MemoryLens"
+			],
+			[
+				"MEmor",
+				"MemoryLens"
+			],
+			[
+				"Memo",
+				"MemoryLens"
+			],
+			[
+				"re",
+				"redistributeHighest"
+			],
+			[
+				"make",
+				"makeJumpsOnly"
+			],
+			[
+				"isV",
+				"isValidNoAnagrams"
+			],
+			[
+				"is",
+				"isValidNoAnagrams"
+			],
+			[
+				"ringOf",
+				"ringOfLocation"
+			],
+			[
+				"segmentO",
+				"segmentOfLocation"
+			],
+			[
+				"initi",
+				"initialValueOfAddress"
+			],
+			[
+				"first",
+				"firstAddressOfRing"
+			],
+			[
+				"segm",
+				"segmentSizeOfRing"
+			],
+			[
+				"segmen",
+				"segmentSizeOfRing"
+			],
+			[
+				"ini",
+				"initializedNeightbours"
+			],
+			[
+				"init",
+				"initialValueOfLocation"
+			],
+			[
+				"loc",
+				"locationOfAddress"
+			],
+			[
+				"dist",
+				"distanceToAddress"
+			],
+			[
+				"show",
+				"showByteAddress"
+			],
+			[
+				"dec",
+				"decodefromDictionary"
+			],
+			[
+				"readPRoper",
+				"readPropertiesAddr"
+			],
+			[
+				"chil",
+				"chileObj"
+			],
+			[
+				"prop",
+				"propertyDefaultCount"
+			],
+			[
+				"obje",
+				"objectSectionBase"
+			],
+			[
+				"def",
+				"defaultCount"
+			],
+			[
+				"Object",
+				"ObjectSectionBase"
+			],
+			[
+				"object",
+				"objectSectionBaseAddress"
+			],
+			[
+				"O",
+				"ObjectSectionBase"
+			],
+			[
+				"WordSe",
+				"WordSeparatorBase"
+			],
+			[
+				"WordSp",
+				"WordSeparatorAddress"
+			],
+			[
+				"wordS",
+				"wordSeparatorsAddress"
+			],
+			[
+				"di",
+				"dictionaryWordAddress"
+			],
+			[
+				"dict",
+				"dictionaryWordAddress"
+			],
+			[
+				"dic",
+				"dictionaryTableEntrySize"
+			],
+			[
+				"Dic",
+				"DictionaryBase"
+			],
+			[
+				"d",
+				"dictionaryWord"
+			],
+			[
+				"wordSe",
+				"wordSeparatorCount"
+			],
+			[
+				"word",
+				"wordSeparatorCountAddress"
+			],
+			[
+				"locked",
+				"lockedAlphabetId"
+			],
+			[
+				"Alp",
+				"Alphabet0"
+			],
+			[
+				"nextA",
+				"nextAlphabetId"
+			],
+			[
+				"alp",
+				"alphabetState"
+			],
+			[
+				"shif",
+				"shiftAlphabet"
+			],
+			[
+				"abb",
+				"abbreviationTableBase"
+			],
+			[
+				"as",
+				"asciiFromZscii"
+			],
+			[
+				"Wor",
+				"WordAddress"
+			],
+			[
+				"Abb",
+				"AbbreviationTableBase"
+			],
+			[
+				"Abbr",
+				"AbbreviationTable"
+			],
+			[
+				"abbrev",
+				"abbreviationTableBase"
+			],
+			[
+				"Abbre",
+				"AbbreviationTableBase"
+			],
+			[
+				"abbre",
+				"abbreviationTableBaseHeaderOffset"
+			],
+			[
+				"val",
+				"validAddressRange"
+			],
+			[
+				"findOnlyC",
+				"findOnlyCandidate"
+			],
+			[
+				"getB",
+				"getBoxIndexFromPos"
+			],
+			[
+				"findOnlyCan",
+				"findOnlyCandidates"
+			],
+			[
+				"ma",
+				"maxDepth"
+			],
+			[
+				"getP",
+				"getPictureRefs"
+			],
+			[
+				"mi",
+				"missingPicturesPassName"
+			],
+			[
+				"missin",
+				"missingPictures"
+			],
+			[
+				"getPic",
+				"getPictureName"
+			],
+			[
+				"getAttr",
+				"getAttributeValue"
+			],
+			[
+				"getChi",
+				"getChildrenByName"
+			],
+			[
+				"getC",
+				"getChildrenByName"
+			],
+			[
+				"get",
+				"getChildrenByName"
+			],
+			[
+				"int",
+				"int64_t"
+			],
+			[
+				"contai",
+				"container_"
+			],
+			[
+				"it",
+				"iterator_type"
+			],
+			[
+				"con",
+				"container_"
+			],
+			[
+				"pro",
+				"product_t"
+			],
+			[
+				"iterat",
+				"iterator_t"
+			],
+			[
+				"se",
+				"seconds_running"
+			],
+			[
+				"de",
+				"detail"
+			],
+			[
+				"prim",
+				"prime_t"
+			],
+			[
+				"fibon",
+				"fibonacci_t"
+			],
+			[
+				"fi",
+				"fibonacci_t"
+			],
+			[
+				"fib",
+				"fibonacci_t"
+			],
+			[
+				"coll",
+				"collect_t"
+			],
+			[
+				"seq",
+				"sequence"
+			],
+			[
+				"memo",
+				"memoize_t"
+			],
+			[
+				"take",
+				"take_while_t"
+			],
+			[
+				"tak",
+				"take_while_t"
+			],
+			[
+				"board_",
+				"board_subset"
+			],
+			[
+				"boar",
+				"board_subset"
+			],
+			[
+				"boa",
+				"board_subset"
+			],
+			[
+				"sudok",
+				"sudoku_cell"
+			],
+			[
+				"sud",
+				"sudoku_cell"
+			],
+			[
+				"ibo",
+				"iboard"
+			],
+			[
+				"col",
+				"col0_"
+			],
+			[
+				"row",
+				"row0_"
+			],
+			[
+				"sudo",
+				"sudoku_board"
+			],
+			[
+				"bo",
+				"board_"
+			],
+			[
+				"sudoku",
+				"sudoku_cell"
+			],
+			[
+				"board",
+				"board_"
+			],
+			[
+				"cell_gr",
+				"cell_group_traits"
+			],
+			[
+				"indi",
+				"indices_"
+			],
+			[
+				"for",
+				"for\tfor - Yield"
+			],
+			[
+				"fo",
+				"for\tfor - Yield"
+			],
+			[
+				"message",
+				"messageWithInstruction"
+			],
+			[
+				"worl",
+				"worldRandom"
+			],
+			[
+				"cl",
+				"clampPos"
+			],
+			[
+				"KeyLe",
+				"KeyLetter"
+			],
+			[
+				"Key",
+				"KeyDown"
+			],
+			[
+				"smo",
+				"smoothMap"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "test/Spec.hs",
+			"settings":
+			{
+				"buffer_size": 9379,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/CPU.hs",
+			"settings":
+			{
+				"buffer_size": 1262,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/BlockMemory.hs",
+			"settings":
+			{
+				"buffer_size": 2305,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "input/6.txt",
+			"settings":
+			{
+				"buffer_size": 36,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/CircularMemory.hs",
+			"settings":
+			{
+				"buffer_size": 3229,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "package.yaml",
+			"settings":
+			{
+				"buffer_size": 1185,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/Misc.hs",
+			"settings":
+			{
+				"buffer_size": 649,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/SpreadSheet.hs",
+			"settings":
+			{
+				"buffer_size": 574,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/Main.hs",
+			"settings":
+			{
+				"buffer_size": 2330,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/Tree.hs",
+			"settings":
+			{
+				"buffer_size": 48,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "module AoC.Tree () where"
+			}
+		},
+		{
+			"contents": "module AoC.RecursiveTower () where\n\n",
+			"file": "src/AoC/RecursiveTower.hs",
+			"file_size": 0,
+			"file_write_time": 131591807007144507,
+			"settings":
+			{
+				"buffer_size": 36,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "input/3.txt",
+			"settings":
+			{
+				"buffer_size": 7,
+				"encoding": "UTF-8",
+				"line_ending": "Unix",
+				"name": "277678"
+			}
+		},
+		{
+			"file": "input/1.txt",
+			"settings":
+			{
+				"buffer_size": 2184,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/AoC/PassPhrase.hs",
+			"settings":
+			{
+				"buffer_size": 303,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "input/2.txt",
+			"settings":
+			{
+				"buffer_size": 1102,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Haskell/Haskell.sublime-build",
+					""
+				],
+				[
+					"Packages/User/clang++.sublime-build",
+					""
+				],
+				[
+					"Packages/User/clang++.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/Haskell (cabal).sublime-build",
+					""
+				],
+				[
+					"Packages/User/Haskell (cabal).sublime-build",
+					"Configure"
+				],
+				[
+					"Packages/User/Haskell (cabal).sublime-build",
+					"Run Test"
+				]
+			],
+			[
+				"Packages/Haskell/Haskell.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/User/Haskell (cabal).sublime-build",
+					""
+				],
+				[
+					"Packages/User/Haskell (cabal).sublime-build",
+					"Configure"
+				],
+				[
+					"Packages/User/Haskell (cabal).sublime-build",
+					"Run Test"
+				]
+			],
+			[
+				"Packages/User/Haskell (cabal).sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 247.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"git re",
+				"Git: Reset (hard) HEAD"
+			],
+			[
+				"stag",
+				"Git: Diff Staged"
+			],
+			[
+				"git un",
+				"Git: Reset (unstage) Current File"
+			],
+			[
+				"git stag",
+				"Git: Diff Staged"
+			],
+			[
+				"git add",
+				"Git: Add Selected Hunk"
+			],
+			[
+				"sta",
+				"Git: Status"
+			],
+			[
+				"stat",
+				"Git: Status"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"status",
+				"Git: Status"
+			],
+			[
+				"add",
+				"Git: Add Current File"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"commi",
+				"Git: Commit"
+			],
+			[
+				"git st",
+				"Git: Status"
+			],
+			[
+				"git",
+				"Git: Status"
+			],
+			[
+				"packa",
+				"Package Control: Discover Packages"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 118.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017",
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/app",
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/input",
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/src",
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/src/AoC",
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/test"
+	],
+	"file_history":
+	[
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/test/MiscSpec.hs",
+		"/Users/yngve/Code/Puzzles/AdventOfCode/2017/src/Lib.hs",
+		"/usr/local/Library/brew.rb",
+		"/Users/yngve/Code/zork-of-haskell/notes.txt",
+		"/Users/yngve/Code/zork-of-haskell/src/Data/Abbreviation.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Data/Version.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Data.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Data/Dictionary.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Memory.Core.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Memory.String.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/String.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Memory.hs",
+		"/Users/yngve/Code/zork-of-haskell/src/Main.hs",
+		"/Users/yngve/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/yngve/Code/zork-of-haskell/src/Zscii.hs",
+		"/Users/yngve/Code/iOS/Magic Stats/Magic Stats/TODO.TODO",
+		"/Users/yngve/Code/Puzzles/Sudoku/Haskell/data/3x3-2.sudoku",
+		"/Users/yngve/Code/Puzzles/Sudoku/Haskell/data/2x2-1.sudoku",
+		"/Users/yngve/Code/Puzzles/Sudoku/Haskell/doku.cabal",
+		"/Users/yngve/Code/Puzzles/Sudoku/Haskell/src/Main.hs",
+		"/Users/yngve/Code/Puzzles/Sudoku/Haskell/src/          at /Users/yngve/Code/Puzzles/Sudoku/Haskell/src/Main.hs",
+		"/Users/yngve/Code/Puzzles/Sudoku/Haskell/src/        (bound at /Users/yngve/Code/Puzzles/Sudoku/Haskell/src/Main.hs",
+		"/Users/yngve/Code/Puzzles/1HaskellADay/doku/    Expected type",
+		"/Users/yngve/Code/Puzzles/1HaskellADay/doku/Main.hs",
+		"/Users/yngve/Code/Puzzles/1HaskellADay/doku/.gitignore",
+		"/Users/yngve/.bash_profile",
+		"/Users/yngve/.bashrc",
+		"/Users/yngve/Code/Puzzles/Rubik/dist/build/autogen/Paths_Rubik.hs",
+		"/Users/yngve/Code/Puzzles/Rubik/dist/build/autogen/cabal_macros.h",
+		"/Users/yngve/Code/Puzzles/Rubik/    Not in scope",
+		"/Users/yngve/Code/Puzzles/UVa/10000/10000.cabal",
+		"/Users/yngve/Code/Puzzles/UVa/10000/Main.hs",
+		"/Users/yngve/UVa/10000/Main.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PageSetLint.cabal",
+		"/Users/yngve/TestCode/haskell/pslint/test/open-file.cddxml",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Xml/Util.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Pass/MissingPictures.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/PageSet/DOM.hs",
+		"/Users/yngve/TestCode/haskell/pslint/dist/build/pslint/pslint",
+		"/Users/yngve/TestCode/haskell/pslint/PageSetLint.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Issue.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Pass.hs",
+		"/Users/yngve/TestCode/haskell/pslint/dist/build/pslint/pslint-tmp/Main.hi",
+		"/Users/yngve/TestCode/haskell/pslint/dist/build/pslint/pslint-tmp/PsLint/Passes.hi",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Passes/MissingPictures.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Setup.hs",
+		"/Users/yngve/TestCode/haskell/pslint/pslint.sublime-project",
+		"/Users/yngve/TestCode/haskell/pslint/PageSet/DOM.hs",
+		"/Users/yngve/TestCode/haskell/pslint/Xml/DOM.hs",
+		"/Users/yngve/TestCode/haskell/pslint/input.xml",
+		"/Users/yngve/TestCode/haskell/pslint/Setup.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/Pass/Pass.hs",
+		"/Users/yngve/TestCode/haskell/pslint/PsLint/PageSetLint.hs",
+		"/Users/yngve/Code/caves-of-haskell/src/WorldGen.hs",
+		"/Users/yngve/Code/caves-of-haskell/caves-of-haskell.sublime-project",
+		"/Users/yngve/Code/caves-of-haskell/.gitignore",
+		"/Users/yngve/Code/caves-of-haskell/Game.hs",
+		"/Users/yngve/Code/caves-of-haskell/Core.hs",
+		"/Users/yngve/Code/caves-of-haskell/Console.hs",
+		"/Users/yngve/Code/caves-of-haskell/caves.cabal",
+		"/Users/yngve/Code/caves-of-haskell/build",
+		"/Users/yngve/Code/caves-of-haskell/README",
+		"/Users/yngve/Code/caves-of-haskell/caves",
+		"/Users/yngve/Code/caves-of-haskell/Common.hs",
+		"/Users/yngve/Library/Application Support/Sublime Text 2/Packages/User/MacTerminal.sublime-settings",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/seq.test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/lib/range/prime.test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/range/range.test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/range/range.h",
+		"/Users/yngve/Code/Puzzles/Euler/lib/range/prime.h",
+		"/Users/yngve/Code/Puzzles/Euler/5/e5.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/range/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/cartesian_product.test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/collection_utils.test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/collection_utils.h",
+		"/Users/yngve/Code/Puzzles/Euler/3/e3.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/primes.h",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/seq.h",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/factors.h",
+		"/Users/yngve/Code/Puzzles/Euler/Jamrules",
+		"/Users/yngve/Code/Puzzles/Euler/1/t1.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/seqio.h",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/seqmath.h",
+		"/Users/yngve/Code/Puzzles/Euler/1/1.h",
+		"/Users/yngve/Code/Puzzles/Euler/2/e2.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/4/e4.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/seqmath",
+		"/Users/yngve/Code/Puzzles/Euler/.gitignore",
+		"/Users/yngve/Code/Puzzles/Euler/1/test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/driver/main.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/driver/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/cartesian_product.h",
+		"/Users/yngve/Code/Puzzles/Euler/5/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/4/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/lib/seq/test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/3/Jamfile",
+		"/Users/yngve/Library/Application Support/Sublime Text 2/Packages/User/Jam.sublime-build",
+		"/Users/yngve/Code/Puzzles/Euler/lib/Catch/single_include/catch.hpp",
+		"/Users/yngve/Code/Puzzles/Euler/2/main.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/Catch/include/internal/catch_test_case_registry_impl.hpp",
+		"/Users/yngve/Code/Puzzles/Euler/lib/Catch/include/internal/catch_test_spec.h",
+		"/Users/yngve/Code/Puzzles/Euler/lib/Catch/projects/SelfTest/TestMain.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/2/test.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/build.txt",
+		"/Users/yngve/Code/Puzzles/Euler/2/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/2/2.h",
+		"/Users/yngve/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Users/yngve/Code/Puzzles/Sudoku/c++/mkgen",
+		"/Users/yngve/Code/Puzzles/Euler/1/main.cpp",
+		"/Users/yngve/Code/Puzzles/Euler/1/Jamfile",
+		"/Users/yngve/Code/Puzzles/Euler/1/1.in",
+		"/Users/yngve/Code/Puzzles/Euler/euler.jam",
+		"/Users/yngve/Code/Puzzles/Sudoku/c++/common/index.hpp",
+		"/Users/yngve/TestCode/haskell/sudoku_solver/SudokuSolver.hs",
+		"/Users/yngve/Code/Puzzles/Sudoku/c++/gen/driver.cpp",
+		"/Users/yngve/Code/Sudoku/untitled",
+		"/Users/yngve/Documents/Personlig/Jobbsøknader/Statoil 2012.txt",
+		"/Users/yngve/TestCode/scala/sudoku_solver/ss.scala",
+		"/Users/yngve/Code/caves-of-haskell/Frame.hs",
+		"/Users/yngve/Code/lib/vty/test/Bench.hs",
+		"/Users/yngve/Code/caves-of-haskell/game.hs",
+		"/Users/yngve/Code/caves-of-haskell/core.hs",
+		"/Users/yngve/Code/caves-of-haskell/common.hs",
+		"/Users/yngve/Code/caves-of-haskell/frame.hs",
+		"/Users/yngve/Code/lib/vty/src/Graphics/Vty/Image.hs",
+		"/Users/yngve/Code/lib/vty/src/Graphics/Vty.hs"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"moveRight",
+			"makeMemory",
+			"balance",
+			"Three",
+			"Two",
+			"locationOfAddress",
+			"lenght",
+			"length",
+			"Right",
+			"Left",
+			"Up",
+			"Down",
+			"sumOfDivisible",
+			"D1.sum"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"folders":
+	[
+		{
+			"path": "/Users/yngve/Code/Puzzles/AdventOfCode/2017"
+		}
+	],
+	"groups":
+	[
+		{
+			"selected": 10,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "test/Spec.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9379,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9202,
+								9202
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1748.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/AoC/CPU.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1262,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								633,
+								633
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/AoC/BlockMemory.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2305,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								837,
+								837
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "input/6.txt",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 36,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35,
+								35
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "src/AoC/CircularMemory.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3229,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								182,
+								182
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 308.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "package.yaml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1185,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								979,
+								979
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/AoC/Misc.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 649,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								15,
+								15
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/AoC/SpreadSheet.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 574,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18,
+								18
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/Main.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2330,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2193,
+								2193
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 128.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "src/AoC/Tree.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 48,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								48,
+								48
+							]
+						],
+						"settings":
+						{
+							"auto_name": "module AoC.Tree () where",
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "src/AoC/RecursiveTower.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 36,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								36,
+								36
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "input/3.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								7,
+								7
+							]
+						],
+						"settings":
+						{
+							"auto_name": "277678",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "input/1.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2184,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2184,
+								2184
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "src/AoC/PassPhrase.hs",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 303,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								280,
+								280
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/Haskell/Haskell.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "input/2.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1102,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1102,
+								1102
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 281.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 94.0
+	},
+	"output.haskell_sublime_load":
+	{
+		"height": 94.0
+	},
+	"pinned_build_system": "Packages/User/Haskell (cabal).sublime-build",
+	"project": "",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"dict",
+				"src/Memory/Dictionary.hs"
+			],
+			[
+				"obj",
+				"src/Memory/Object.hs"
+			],
+			[
+				"memo",
+				"src/Memory.hs"
+			],
+			[
+				"di",
+				"src/Memory/Dictionary.hs"
+			],
+			[
+				"memory",
+				"src/Memory.hs"
+			],
+			[
+				"",
+				"src/Main.hs"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 47.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"print",
+				"printBoard"
+			]
+		],
+		"width": 392.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 253.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

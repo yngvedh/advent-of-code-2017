@@ -1,0 +1,4 @@
+.stack-work/
+aoc17.cabal
+app/
+dist/
