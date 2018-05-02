@@ -19,6 +19,7 @@ import Tests.AoC.Plumbing
 import Tests.AoC.Firewall
 import Tests.AoC.Disk
 import Tests.AoC.Focus
+import Tests.AoC.Generator
 
 main :: IO ()
 main = hspec $ do
@@ -307,3 +308,4 @@ main = hspec $ do
   describeFirewall
   describeDisk
   describeFocus
+  describeGenerator

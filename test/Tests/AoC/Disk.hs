@@ -30,7 +30,7 @@ describeDisk = describe "AoC.Disk" $ do
       let excerpt = take 8 . map (take 8) $ showed
       excerpt `shouldBe` expected
 
-  describe "countRegions" $ do
+  xdescribe "countRegions" $ do
     it "should count regions in sample correctly" $ do
       let disk = diskFromKey "flqrgnkx"
       countRegions disk `shouldBe` 1242
