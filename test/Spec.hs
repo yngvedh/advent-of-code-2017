@@ -20,6 +20,7 @@ import Tests.AoC.Firewall
 import Tests.AoC.Disk
 import Tests.AoC.Focus
 import Tests.AoC.Generator
+import Tests.AoC.PermProm
 
 main :: IO ()
 main = hspec $ do
@@ -309,3 +310,4 @@ main = hspec $ do
   describeDisk
   describeFocus
   describeGenerator
+  describePermProm
