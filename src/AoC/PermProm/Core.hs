@@ -1,10 +1,11 @@
 module AoC.PermProm.Core (
   DanceMove(..), Dancer(..),
   spin, exchange, partner, move,
-  dance) where
+  dance, repeatDance) where
 
-import Data.List (elemIndex)
+import Data.List (elemIndex, nubBy)
 import Data.Maybe (fromJust)
+import Debug.Trace
 
 data DanceMove = Spin Int | Exchange Int Int | Partner Dancer Dancer
   deriving (Show, Eq)
@@ -39,3 +40,16 @@ move (Partner a b) = partner a b
 
 dance :: [DanceMove] -> [Dancer] -> [Dancer]
 dance = flip $ foldl (flip move)
+
+repeatDance :: Int -> [DanceMove] -> [Dancer] -> [Dancer]
+repeatDance n ms ds = c !! n' where
+  n' = n `mod` l
+  l = length c
+  c = danceCycle ms ds
+
+danceCycle :: [DanceMove] -> [Dancer] -> [[Dancer]]
+danceCycle ms ds = ds:c where
+  c = danceCycle' ds ms ds
+  cut = length c - 1
+  danceCycle' start ms ds = if ds' == start then [] else ds':(danceCycle' start ms ds') where
+    ds' = dance ms ds

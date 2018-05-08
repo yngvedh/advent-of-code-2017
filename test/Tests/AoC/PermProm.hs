@@ -71,3 +71,17 @@ describePermProm = describe "AoC.PermProm" $ do
       let moves = [Spin 1, Exchange 3 4, Partner (Dancer 'e') (Dancer 'b')]
       dance moves dancers `shouldBe` map Dancer "baedc"
 
+  describe "repeatDance" $ do
+    it "should execute sample correctly" $ do
+      let moves = [Spin 1, Exchange 3 4, Partner (Dancer 'e') (Dancer 'b')]
+      repeatDance 2 moves dancers `shouldBe` map Dancer "ceadb"
+
+    it "should execute partner correctly after permutation" $ do
+      let moves = [Spin 1, Partner (Dancer 'a') (Dancer 'b')]
+      repeatDance 2 moves dancers `shouldBe` map Dancer "deabc"
+
+    it "should execute a full cycle correctly" $ do
+      let moves = [Spin 1]
+      repeatDance 5 moves dancers `shouldBe` map Dancer "abcde"
+
+
