@@ -1,10 +1,11 @@
 module AoC.Focus.List (
-  ListFocus, makeFocus,
+  ListFocus, makeFocus, makeFocusAt,
   moveRight, moveLeft, moveLeftMost,
   isLeftMost, isRightMost,
   set, get, update,
   focusElement,
-  unfocus) where
+  unfocus,
+  insertRightOf) where
 
 data ListFocus a = ListFocus [a] [a]
   deriving (Show, Eq)
@@ -13,7 +14,11 @@ makeFocus :: [a] -> ListFocus a
 makeFocus [] = error "Attempting to construct a ListFocus with an empty list"
 makeFocus as = ListFocus [] as
 
-unfocus (ListFocus pre post) = reverse pre ++ post
+makeFocusAt :: Int -> [a] -> ListFocus a
+makeFocusAt _ [] = error "Attempting to construct a ListFocus with an empty list" 
+makeFocusAt n as = ListFocus (reverse . take n $ as) (drop n as)
+
+unfocus (ListFocus pre post) = (reverse pre) ++ post
 
 moveRight (ListFocus pre (p:post@(_:_))) = ListFocus (p:pre) post
 moveRight lf = lf
@@ -28,6 +33,9 @@ isLeftMost _ = False
 
 isRightMost (ListFocus _ [p]) = True
 isRightMost _ = False
+
+insertRightOf :: a -> ListFocus a -> ListFocus a
+insertRightOf a (ListFocus pre (p:post)) = ListFocus pre (p:a:post)
 
 set :: a -> ListFocus a -> ListFocus a
 set f' (ListFocus pre (p:post)) = (ListFocus pre (f':post))
