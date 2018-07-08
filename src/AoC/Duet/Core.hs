@@ -97,17 +97,16 @@ executeInstruction (Rcv reg) ec@(ExecutionContext c _) =
   then jumpNext . withCpu (setRegister reg $ getOutput c) $ ec
   else jumpNext ec
 executeInstruction (Jgz reg val) ec =
-  if getRegisterValue reg (registers ec) /= 0 then
+  if getRegisterValue reg (registers ec) > 0 then
     let offset = Offset . getValue val . registers $ ec in
       jump offset ec
   else jumpNext ec
-      
 
 jump :: Offset -> ExecutionContext -> ExecutionContext
 jump (Offset 0) ec = ec
 jump (Offset o) ec = if o < 0
-  then jump (Offset $ o+1) $ withInstructions moveRight ec
-  else jump (Offset $ o-1) $ withInstructions moveLeft ec
+  then jump (Offset $ o+1) $ withInstructions moveLeft ec
+  else jump (Offset $ o-1) $ withInstructions moveRight ec
 
 withInstructions :: (ListFocus Instruction -> ListFocus Instruction) -> ExecutionContext -> ExecutionContext
 withInstructions f (ExecutionContext rs is) = ExecutionContext rs (f is)
