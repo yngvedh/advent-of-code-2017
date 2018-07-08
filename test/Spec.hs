@@ -22,6 +22,7 @@ import Tests.AoC.Focus
 import Tests.AoC.Generator
 import Tests.AoC.PermProm
 import Tests.AoC.SpinLock
+import Tests.AoC.Duet
 
 main :: IO ()
 main = hspec $ do
@@ -313,3 +314,4 @@ main = hspec $ do
   describeGenerator
   describePermProm
   describeSpinLock
+  describeDuet
