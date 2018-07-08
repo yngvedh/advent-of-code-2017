@@ -25,24 +25,24 @@ describeDuet = describe "AoC.Duet" $ do
 
   let testEC = testExecutionContext sampleProgram
 
-  describe "parse" $ do
-    it "should parse sample correctly" $ do
-      parseInstructions sampleInput `shouldBe` Right sampleProgram
+  describe "parse" $
+    it "should parse sample correctly" $
+    parseInstructions sampleInput `shouldBe` Right sampleProgram
 
-  describe "runProgram" $ do
+  describe "runProgram" $
     it "should run example and produce correct state" $ do
       let expecteds = [testEC [] 0 0,
-                       testEC [("a", 1)] 0 1,
-                       testEC [("a", 3)] 0 2,
-                       testEC [("a", 9)] 0 3,
-                       testEC [("a", 4)] 0 4,
-                       testEC [("a", 4)] 4 5,
-                       testEC [("a", 0)] 4 6,
-                       testEC [("a", 0)] 4 7,
-                       testEC [("a", 0)] 4 8,
-                       testEC [("a", 1)] 4 9,
-                       testEC [("a", 1)] 4 7, -- FIX: jgz increments pc before jumping
-                       testEC [("a", 4)] 4 8]
+                      testEC [("a", 1)] 0 1,
+                      testEC [("a", 3)] 0 2,
+                      testEC [("a", 9)] 0 3,
+                      testEC [("a", 4)] 0 4,
+                      testEC [("a", 4)] 4 5,
+                      testEC [("a", 0)] 4 6,
+                      testEC [("a", 0)] 4 7,
+                      testEC [("a", 0)] 4 8,
+                      testEC [("a", 1)] 4 9,
+                      testEC [("a", 1)] 4 7,
+                      testEC [("a", 1)] 4 6]
 
       let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ sampleProgram
-      results `shouldBe` expecteds
+      mconcat $ zipWith shouldBe results expecteds
