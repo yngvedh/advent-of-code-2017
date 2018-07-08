@@ -51,7 +51,13 @@ data Cpu = Cpu Registers Int
   deriving (Eq, Show)
 
 data ExecutionContext = ExecutionContext Cpu (ListFocus Instruction)
-  deriving (Eq, Show)
+  deriving (Eq)
+
+instance Show ExecutionContext where
+  show (ExecutionContext cpu is) = "ËxecutionContext:\n" ++ show cpu ++ "\n" ++ show' is where
+    show' :: ListFocus Instruction -> String
+    show' l = unlines $ (map ((++) "  ") . map show . prefix $ l) ++ ["> " ++ show (get l)] ++ (map ((++) "  ") . map show . postfix $ l)
+
 
 emptyExecutionContext = ExecutionContext (Cpu (Registers []) 0) . makeFocus
 
