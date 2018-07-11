@@ -1,7 +1,7 @@
 module AoC.Duet.Core (
   Instruction(..), Offset(..),
   Register(..), Value(..), Registers(..), Cpu(..), ExecutionContext(..),
-  stepOnce, emptyExecutionContext) where
+  stepOnce, executeFirstRcv, emptyExecutionContext) where
 
 import AoC.Focus.List
 
@@ -58,7 +58,7 @@ instance Show ExecutionContext where
     show' :: ListFocus Instruction -> String
     show' l = unlines $ (map ((++) "  ") . map show . prefix $ l) ++ ["> " ++ show (get l)] ++ (map ((++) "  ") . map show . postfix $ l)
 
-
+emptyExecutionContext :: [Instruction] -> ExecutionContext
 emptyExecutionContext = ExecutionContext (Cpu (Registers []) 0) . makeFocus
 
 withCpu :: (Cpu -> Cpu) -> ExecutionContext -> ExecutionContext
@@ -80,9 +80,17 @@ updateRegister reg f c = setRegister reg v' c where
   (Cpu rs _) = c
 
 stepOnce :: ExecutionContext -> ExecutionContext
-stepOnce ec@(ExecutionContext _ is) =
+stepOnce ec =
   executeInstruction instr ec where
-    instr = get is
+    instr = nextInstruction ec
+
+executeFirstRcv :: ExecutionContext -> ExecutionContext
+executeFirstRcv ec = if isRcv . nextInstruction $ ec then ec' else executeFirstRcv ec' where
+  ec' = stepOnce ec
+  isRcv (Rcv reg) = 0 /= (getRegisterValue reg . registers $ ec)
+  isRcv _ = False
+
+nextInstruction (ExecutionContext _ is) = get is
 
 registers :: ExecutionContext -> Registers
 registers (ExecutionContext (Cpu rs _) _) = rs
@@ -120,7 +128,6 @@ withInstructions f (ExecutionContext rs is) = ExecutionContext rs (f is)
 executeArithmetic :: (Int -> Int -> Int) -> Register -> Value -> ExecutionContext -> ExecutionContext
 executeArithmetic op reg val ec = withCpu (updateRegister reg $ flip op v) ec where
   v = getValue val $ registers ec
-
 
 getValue :: Value -> Registers -> Int
 getValue (LiteralValue v) _ = v

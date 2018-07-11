@@ -17,6 +17,7 @@ import AoC.Disk
 import AoC.Generator
 import AoC.PermProm
 import AoC.SpinLock
+import AoC.Duet
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -50,6 +51,7 @@ solveDay day =
     15 -> day15
     16 -> day16
     17 -> day17
+    18 -> day18
     otherwise -> unsolvedDay
 
 
@@ -199,3 +201,10 @@ day17Solver dist = do
   putStrLn $ "The value after 2017, is: " ++ (show i)
   putStrLn $ "The value of pos 1 after 50000000 insertions, is: " ++ (show i')
 
+day18 = dayWithParserAndSolver parseDuetProgram day18Solver
+
+day18Solver is = do
+  let ec = makeDuetExecutionContext is
+  let ec' = executeFirstRcv ec
+  let hz = duetOutputFrequency ec'
+  putStrLn $ "The output frequency when first read is: " ++ (show hz)

@@ -29,8 +29,8 @@ describeDuet = describe "AoC.Duet" $ do
     it "should parse sample correctly" $
     parseInstructions sampleInput `shouldBe` Right sampleProgram
 
-  describe "runProgram" $
-    it "should run example and produce correct state" $ do
+  describe "stepOnce" $
+    it "should run example and produce correct state and intermediate states" $ do
       let expecteds = [testEC [] 0 0,
                       testEC [("a", 1)] 0 1,
                       testEC [("a", 3)] 0 2,
@@ -42,7 +42,12 @@ describeDuet = describe "AoC.Duet" $ do
                       testEC [("a", 0)] 4 8,
                       testEC [("a", 1)] 4 9,
                       testEC [("a", 1)] 4 7,
-                      testEC [("a", 1)] 4 6]
+                      testEC [("a", 1)] 4 6,
+                      testEC [("a", 4)] 4 7]
 
       let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ sampleProgram
       mconcat $ zipWith shouldBe results expecteds
+  
+  describe "executeFirstRcv" $
+    it "should run example and produce correct state" $
+    executeFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` testEC [("a", 4)] 4 7
