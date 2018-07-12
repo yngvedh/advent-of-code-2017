@@ -26,8 +26,7 @@ register = do
 snd :: Parser Instruction
 snd = do
   string "snd "
-  hz <- value
-  return $ Snd hz
+  Snd <$> value
 
 set = instrRV "set" Set
 add = instrRV "add" Add
@@ -37,8 +36,7 @@ mod = instrRV "mod" Mod
 rcv :: Parser Instruction
 rcv = do
   string "rcv "
-  r <- register
-  return $ Rcv r
+  Rcv <$> register
 
 jgz = instrRV "jgz" Jgz
 
@@ -48,16 +46,13 @@ instrRV name ctor = do
   char ' '
   reg <- register
   char ' '
-  val <- value
-  return $ ctor reg val
+  ctor reg <$> value
 
 value :: Parser Value
 value = do
   lit <- optionMaybe integer
   case lit of
     Just v -> return $ LiteralValue v
-    Nothing -> do
-      reg <- register
-      return $ RegisterValue reg
+    Nothing -> RegisterValue <$> register
 
 

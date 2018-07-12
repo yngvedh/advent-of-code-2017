@@ -18,6 +18,5 @@ layer :: Parser Layer
 layer = do
   pos <- integer
   string ": "
-  depth <- integer
-  return $ Layer pos depth
+  Layer pos <$> integer
 

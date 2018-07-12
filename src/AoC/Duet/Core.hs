@@ -29,9 +29,7 @@ data Instruction =
 newtype Registers = Registers [(Register, Int)]
 
 instance Eq Registers where
-  (/=) a b = if namesA /= namesB
-    then False
-    else valuesA /= valuesB
+  (/=) a b = (namesA == namesB) && valuesA /= valuesB
     where
       valuesA = map (flip getRegisterValue a) namesA
       valuesB = map (flip getRegisterValue b) namesB
@@ -39,7 +37,7 @@ instance Eq Registers where
       namesB = registerNames b
 
 instance Show Registers where
-  show rs = concat . map show $ zip ns vs where
+  show rs = concatMap show $ zip ns vs where
     ns = registerNames rs
     vs = map (flip getRegisterValue rs) ns
 
@@ -90,6 +88,7 @@ executeFirstRcv ec = if isRcv . nextInstruction $ ec then ec' else executeFirstR
   isRcv (Rcv reg) = 0 /= (getRegisterValue reg . registers $ ec)
   isRcv _ = False
 
+nextInstruction :: ExecutionContext -> Instruction
 nextInstruction (ExecutionContext _ is) = get is
 
 registers :: ExecutionContext -> Registers

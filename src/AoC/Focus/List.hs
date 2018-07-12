@@ -21,7 +21,8 @@ makeFocusAt n as = ListFocus (reverse . take n $ as) (drop n as)
 unfocus, prefix, postfix :: ListFocus a -> [a]
 unfocus (ListFocus pre post) = (reverse pre) ++ post
 prefix (ListFocus pre _) = reverse pre
-postfix (ListFocus _ (p:post)) = post
+postfix (ListFocus _ (_:post)) = post
+postfix (ListFocus _ []) = error "Attempt to extract postfix where there is none"
 
 
 moveRight (ListFocus pre (p:post@(_:_))) = ListFocus (p:pre) post

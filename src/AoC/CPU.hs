@@ -4,7 +4,7 @@ data Jumps = Jumps { precedingJumps :: [Int], jumpInstruction :: (Maybe Int), su
   deriving (Eq, Show)
 
 makeJumps :: [Int] -> Int -> [Int] -> Jumps
-makeJumps ps j ss = Jumps ps (Just j) ss
+makeJumps ps j = Jumps ps (Just j)
 
 makeInitialJumps :: [Int] -> Jumps
 makeInitialJumps [] = makeJumpsOnly []
@@ -24,6 +24,7 @@ step' :: (Int -> Int) -> Jumps -> Jumps
 step' _ js@(Jumps _ Nothing _) = js
 step' newOffset (Jumps ps (Just j) ss) = moveSp j $ makeJumps ps (newOffset j) ss
 
+moveSp :: Int -> Jumps -> Jumps
 moveSp _ js@(Jumps _ Nothing _) = js
 moveSp 0 js = js
 moveSp n (Jumps ps (Just j) ss) =

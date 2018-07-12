@@ -52,7 +52,7 @@ solveDay day =
     16 -> day16
     17 -> day17
     18 -> day18
-    otherwise -> unsolvedDay
+    _ -> unsolvedDay
 
 
 unsolvedDay :: String -> IO ()
@@ -60,28 +60,28 @@ unsolvedDay _ = putStrLn "Day not solved yet."
 
 day1 input = do
   let digits = map digitToInt $ (head . lines) input
-  putStrLn $ show $ AoC.Misc.sumConsecutiveEquals digits
-  putStrLn $ show $ AoC.Misc.sumOppositeEquals digits
+  print $ AoC.Misc.sumConsecutiveEquals digits
+  print $ AoC.Misc.sumOppositeEquals digits
 
 
 day2 :: String -> IO ()
 day2 input = do
   let sheet = map (map (read :: String -> Int)) $ map words $ lines input
-  putStrLn $ show $ AoC.SpreadSheet.checksum sheet
-  putStrLn $ show $ AoC.SpreadSheet.sumOfDivisions sheet
+  print $ AoC.SpreadSheet.checksum sheet
+  print $ AoC.SpreadSheet.sumOfDivisions sheet
 
 day3 input = do
   let adr = (read input) :: Int
-  putStrLn $ show $ AoC.CircularMemory.distanceToAddress adr
-  putStrLn $ show $ fromJust $ find (> adr) AoC.CircularMemory.initialValues
+  print $ AoC.CircularMemory.distanceToAddress adr
+  print $ fromJust $ find (> adr) AoC.CircularMemory.initialValues
 
 day4 :: String -> IO ()
 day4 input = do
   let phrases = lines input
   let n = length $ filter (== True) $ map AoC.PassPhrase.isValid phrases
   let n' = length $ filter (== True) $ map AoC.PassPhrase.isValidNoAnagrams phrases
-  putStrLn $ show n
-  putStrLn $ show n'
+  print n
+  print n'
 
 countJumps :: (Jumps -> Jumps) -> Jumps -> Int
 countJumps step' js =
@@ -93,16 +93,16 @@ day5 input = do
   let jumps = makeInitialJumps $ map (read :: String -> Int) $ lines input
   let n = countJumps step jumps
   let n' = countJumps weirdStep jumps
-  putStrLn $ show n
-  putStrLn $ show n'
+  print n
+  print n'
 
 day6 input = do
   let memory = AoC.BlockMemory.makeMemory $ (map read $ words input :: [Int])
   let cycle = AoC.BlockMemory.balance memory
-  putStrLn . show . length $ cycle
-  putStrLn . show . length $ dropWhile ((/=) $ AoC.BlockMemory.balanceStep $ last cycle) cycle
+  print . length $ cycle
+  print . length $ dropWhile ((/=) $ AoC.BlockMemory.balanceStep $ last cycle) cycle
 
-day7 input = 
+day7 input =
   case AoC.RecursiveTower.parseTower input of
     Left error -> putStrLn $ "Parse error: " ++ error
     Right tower -> do
@@ -117,10 +117,10 @@ day8 = dayWithParserAndSolver parseInstructions day8Solver
 
 day8Solver instructions = do
   let (result, largest) = executeInstructionsAndTraceLargestValue makeRegisters instructions
-  putStrLn . show . largestValue $ result
-  putStrLn . show $ largest
+  print . largestValue $ result
+  print largest
 
-dayWithParserAndSolver parser solver input = do
+dayWithParserAndSolver parser solver input =
   case parser input of
     Left error -> putStrLn $ "Parser error: " ++ error
     Right parsed -> solver parsed
@@ -130,24 +130,24 @@ day9 = dayWithParserAndSolver parseStream day9Solver
 day9Solver root = do
   let score = scoreGroup root
   let n = countGarbage root
-  putStrLn $ "Score: " ++ (show score)
-  putStrLn $ "#Garbage: " ++ (show n)
+  putStrLn $ "Score: " ++ show score
+  putStrLn $ "#Garbage: " ++ show n
 
 day10 = dayWithParserAndSolver parseKnotInput day10Solver
 
 day10Solver (asciiLengths, byteLengths) = do
   let hash = computeKnotHash asciiLengths
   let fullHash = computeFullKnotHash byteLengths
-  putStrLn $ "Hash: " ++ (show hash)
-  putStrLn $ "Real hash:" ++ (showFullKnotHash fullHash)
+  putStrLn $ "Hash: " ++ show hash
+  putStrLn $ "Real hash:" ++ showFullKnotHash fullHash
 
 day11 = dayWithParserAndSolver parseHexPath day11Solver
 
 day11Solver path = do
   let dist = hexManhattanDist . hexEndPos $ path
   let farthestDist = hexFarthestDist path
-  putStrLn $ "Distance: " ++ (show dist)
-  putStrLn $ "Farthest distance: " ++ (show farthestDist)
+  putStrLn $ "Distance: " ++ show dist
+  putStrLn $ "Farthest distance: " ++ show farthestDist
 
 day12 = dayWithParserAndSolver parsePlumbing day12Solver
 
