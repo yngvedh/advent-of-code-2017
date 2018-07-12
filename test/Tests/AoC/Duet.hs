@@ -48,6 +48,6 @@ describeDuet = describe "AoC.Duet" $ do
       let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ sampleProgram
       mconcat $ zipWith shouldBe results expecteds
   
-  describe "executeFirstRcv" $
+  describe "runSolo" $
     it "should run example and produce correct state" $
-    executeFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` testEC [("a", 4)] 4 7
+      runSoloFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` testEC [("a", 4)] 4 7

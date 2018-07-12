@@ -205,6 +205,6 @@ day18 = dayWithParserAndSolver parseDuetProgram day18Solver
 
 day18Solver is = do
   let ec = makeDuetExecutionContext is
-  let ec' = executeFirstRcv ec
+  let ec' = runSoloFirstRcv ec
   let hz = duetOutputFrequency ec'
   putStrLn $ "The output frequency when first read is: " ++ (show hz)

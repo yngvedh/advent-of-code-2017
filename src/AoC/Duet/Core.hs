@@ -1,7 +1,7 @@
 module AoC.Duet.Core (
   Instruction(..), Offset(..),
   Register(..), Value(..), Registers(..), Cpu(..), ExecutionContext(..),
-  stepOnce, executeFirstRcv, emptyExecutionContext) where
+  stepOnce, runSoloFirstRcv, emptyExecutionContext) where
 
 import AoC.Focus.List
 
@@ -82,8 +82,8 @@ stepOnce ec =
   executeInstruction instr ec where
     instr = nextInstruction ec
 
-executeFirstRcv :: ExecutionContext -> ExecutionContext
-executeFirstRcv ec = if isRcv . nextInstruction $ ec then ec' else executeFirstRcv ec' where
+runSoloFirstRcv :: ExecutionContext -> ExecutionContext
+runSoloFirstRcv ec = if isRcv . nextInstruction $ ec then ec' else runSoloFirstRcv ec' where
   ec' = stepOnce ec
   isRcv (Rcv reg) = 0 /= (getRegisterValue reg . registers $ ec)
   isRcv _ = False
