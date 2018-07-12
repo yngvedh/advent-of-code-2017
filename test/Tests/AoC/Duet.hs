@@ -1,6 +1,7 @@
 module Tests.AoC.Duet (describeDuet) where
 
 import AoC.Duet.Core
+import AoC.Duet.Solo
 import AoC.Duet.Parse
 import AoC.Focus.List
 

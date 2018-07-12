@@ -1,9 +1,10 @@
-module AoC.Duet (parseDuetProgram, makeDuetExecutionContext, runSoloFirstRcv, duetOutputFrequency) where
+module AoC.Duet (parseDuetProgram, makeSoloExecutionContext, runSoloFirstRcv, soloOutputFrequency) where
 
 import qualified AoC.Duet.Core as C
 import qualified AoC.Duet.Parse as P
+import qualified AoC.Duet.Solo as S
 
 parseDuetProgram = P.parseInstructions
-makeDuetExecutionContext = C.emptyExecutionContext
-runSoloFirstRcv = C.runSoloFirstRcv
-duetOutputFrequency (C.ExecutionContext (C.Cpu _ hz) _) = hz
+makeSoloExecutionContext = S.emptyExecutionContext
+runSoloFirstRcv = S.runSoloFirstRcv
+soloOutputFrequency (S.ExecutionContext (C.Cpu _ hz) _) = hz
