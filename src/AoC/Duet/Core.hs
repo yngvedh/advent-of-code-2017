@@ -1,8 +1,9 @@
 module AoC.Duet.Core (
   Instruction(..), Offset(..),
   Register(..), Value(..), Registers(..), Cpu(..),
-  getRegisterValue, setRegister, updateRegister,
-  setOutput, getOutput, getValue) where
+  getRegisterValue, setRegister, withRegister, getRegister,
+  setOutput, getOutput, getValue,
+  executeCpuInstruction) where
 
 import Data.List (nub, sort)
 
@@ -53,20 +54,31 @@ setOutput hz (Cpu rs _) = Cpu rs hz
 getOutput :: Cpu -> Int
 getOutput (Cpu _ hz) = hz
 
+withRegister :: Register -> (Int -> Int) -> Cpu -> Cpu
+withRegister reg f cpu = (setRegister reg . f . getRegister reg $ cpu) cpu
+
 setRegister :: Register -> Int -> Cpu -> Cpu
 setRegister reg v (Cpu (Registers rs) hz) = Cpu (Registers rs') hz where
   rs' = (reg,v):rs
 
-updateRegister :: Register -> (Int -> Int) -> Cpu -> Cpu
-updateRegister reg f c = setRegister reg v' c where
-  v' = f $ getValue (RegisterValue reg) rs
-  (Cpu rs _) = c
+getRegister :: Register -> Cpu -> Int
+getRegister reg cpu@(Cpu rs _) = getRegisterValue reg rs
 
-getValue :: Value -> Registers -> Int
+getValue :: Value -> Cpu -> Int
 getValue (LiteralValue v) _ = v
-getValue (RegisterValue name) rs = getRegisterValue name rs 
+getValue (RegisterValue reg) cpu = getRegister reg cpu
 
+getRegisterValue :: Register -> Registers -> Int
 getRegisterValue name (Registers rs) =
   case lookup name rs of
     Just v -> v
     Nothing -> 0
+
+executeCpuInstruction :: Instruction -> Cpu -> Cpu
+executeCpuInstruction (Set reg val) cpu = setRegister reg (getValue val cpu) cpu where
+executeCpuInstruction (Add reg val) cpu = executeArithmetic (+) reg val cpu
+executeCpuInstruction (Mul reg val) cpu = executeArithmetic (*) reg val cpu
+executeCpuInstruction (Mod reg val) cpu =  executeArithmetic mod reg val cpu
+
+executeArithmetic :: (Int -> Int -> Int) -> Register -> Value -> Cpu -> Cpu
+executeArithmetic op reg val cpu = withRegister reg (flip op $ getValue val cpu) cpu where
