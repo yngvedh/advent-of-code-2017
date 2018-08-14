@@ -2,7 +2,7 @@ module AoC.Duet.Core (
   Instruction(..), Offset(..),
   Register(..), Value(..), Registers(..), Cpu(..),
   getRegisterValue, setRegister, withRegister, getRegister,
-  setOutput, getOutput, getValue,
+  getValue,
   executeCpuInstruction) where
 
 import Data.List (nub, sort)
@@ -45,24 +45,18 @@ registerNames :: Registers -> [Register]
 registerNames = nub . sort . map fst . regs where
   regs (Registers rs) = rs
 
-data Cpu = Cpu Registers Int
+data Cpu = Cpu Registers
   deriving (Eq, Show)
-
-setOutput :: Int -> Cpu -> Cpu
-setOutput hz (Cpu rs _) = Cpu rs hz
-
-getOutput :: Cpu -> Int
-getOutput (Cpu _ hz) = hz
 
 withRegister :: Register -> (Int -> Int) -> Cpu -> Cpu
 withRegister reg f cpu = (setRegister reg . f . getRegister reg $ cpu) cpu
 
 setRegister :: Register -> Int -> Cpu -> Cpu
-setRegister reg v (Cpu (Registers rs) hz) = Cpu (Registers rs') hz where
+setRegister reg v (Cpu (Registers rs)) = Cpu (Registers rs') where
   rs' = (reg,v):rs
 
 getRegister :: Register -> Cpu -> Int
-getRegister reg cpu@(Cpu rs _) = getRegisterValue reg rs
+getRegister reg cpu@(Cpu rs) = getRegisterValue reg rs
 
 getValue :: Value -> Cpu -> Int
 getValue (LiteralValue v) _ = v
