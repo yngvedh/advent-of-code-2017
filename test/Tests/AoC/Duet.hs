@@ -7,9 +7,9 @@ import AoC.Focus.List
 
 import Test.Hspec
 
-testExecutionContext p rs hz pos = ExecutionContext (Cpu rs' hz) is where
+testExecutionContext is rs hz pos = ExecutionContext (Cpu rs' p) hz where
   rs' = Registers $ map (\(a,b) -> (Register a, b)) rs
-  is = makeFocusAt pos p
+  p = Program $ makeFocusAt pos is
 
 describeDuet = describe "AoC.Duet" $ do
   let sampleInput = "set a 1\nadd a 2\nmul a a\nmod a 5\nsnd a\nset a 0\nrcv a\njgz a -1\nset a 1\njgz a -2\n"

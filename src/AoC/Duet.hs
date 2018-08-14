@@ -7,4 +7,4 @@ import qualified AoC.Duet.Solo as S
 parseDuetProgram = P.parseInstructions
 makeSoloExecutionContext = S.emptyExecutionContext
 runSoloFirstRcv = S.runSoloFirstRcv
-soloOutputFrequency (S.ExecutionContext _ _ hz) = hz
+soloOutputFrequency (S.ExecutionContext _ hz) = hz
