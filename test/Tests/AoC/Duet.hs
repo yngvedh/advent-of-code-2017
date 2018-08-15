@@ -7,7 +7,7 @@ import AoC.Focus.List
 
 import Test.Hspec
 
-testExecutionContext is rs hz pos = ExecutionContext (Cpu rs' p) hz where
+testExecutionContext is rs ch pos = ExecutionContext (Cpu rs' p) ch where
   rs' = Registers $ map (\(a,b) -> (Register a, b)) rs
   p = Program $ makeFocusAt pos is
 
@@ -23,14 +23,13 @@ describeDuet = describe "AoC.Duet" $ do
                        Jgz (Register "a") (LiteralValue (-1)),
                        Set (Register "a") (LiteralValue 1),
                        Jgz (Register "a") (LiteralValue (-2))]
-
-  let testEC = testExecutionContext sampleProgram
+  let testEC rs hz = testExecutionContext sampleProgram rs (IoReg hz)
 
   describe "parse" $
     it "should parse sample correctly" $
-    parseInstructions sampleInput `shouldBe` Right sampleProgram
+      parseInstructions sampleInput `shouldBe` Right sampleProgram
 
-  describe "stepOnce" $
+  describe "stepOnce" $ do
     it "should run example and produce correct state and intermediate states" $ do
       let expecteds = [testEC [] 0 0,
                       testEC [("a", 1)] 0 1,
@@ -48,7 +47,33 @@ describeDuet = describe "AoC.Duet" $ do
 
       let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ sampleProgram
       mconcat $ zipWith shouldBe results expecteds
-  
+
+    it "Should read,write buffer correctly" $ do
+      let testProgram = [Snd $ LiteralValue 1,
+                        Snd $ LiteralValue 2,
+                        Snd $ LiteralValue 3,
+                        Set (Register "a") (LiteralValue 7),
+                        Rcv $ Register "a",
+                        Rcv $ Register "a",
+                        Rcv $ Register "a",
+                        Set (Register "a") (LiteralValue 0)]
+
+      let testEC rs hzs = testExecutionContext testProgram rs (IoBuf hzs)
+
+      let expecteds = [testEC [] [] 0,
+                       testEC [] [1] 1,
+                       testEC [] [2,1] 2,
+                       testEC [] [3,2,1] 3,
+                       testEC [("a", 7)] [3,2,1] 4,
+                       testEC [("a", 3)] [2,1] 5,
+                       testEC [("a", 2)] [1] 6,
+                       testEC [("a", 1)] [] 7]
+      
+      let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ testProgram
+      mconcat $ zipWith shouldBe results expecteds
+
   describe "runSolo" $
     it "should run example and produce correct state" $
       runSoloFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` testEC [("a", 4)] 4 7
+
+
