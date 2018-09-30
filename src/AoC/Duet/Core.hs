@@ -1,11 +1,14 @@
 module AoC.Duet.Core (
   Instruction(..), Offset(..), Program(..),
   Register(..), Value(..), Registers(..), Cpu(..),
-  getRegisterValue, setRegister, withRegister, getRegister,
+  getRegisterValue, setRegister, withRegister, getRegister, registerNames,
   getValue, jumpNext,
-  executeCpuInstruction, nextInstruction, makeProgram) where
+  executeCpuInstruction, nextInstruction, makeProgram,
+  makeRegisters, makeRegistersFromList,
+  instructions) where
 
 import Data.List (nub, sort)
+import qualified Data.Map.Strict as M
 
 import qualified AoC.Focus.List as F;
 
@@ -25,7 +28,7 @@ data Instruction =
   Mul Register Value |
   Mod Register Value |
   Rcv Register |
-  Jgz Register Value
+  Jgz Value Value
   deriving (Eq, Show)
 
 data Program = Program (F.ListFocus Instruction)
@@ -37,8 +40,11 @@ makeProgram :: [Instruction] -> Program
 makeProgram = Program . F.makeFocus
 
 moveRight, moveLeft :: Program -> Program
-moveRight = Program . F.moveRight . instructions
-moveLeft = Program . F.moveLeft . instructions
+moveRight = Program . F.moveRight . verify (not . F.isRightMost) . instructions
+moveLeft = Program . F.moveLeft . verify (not . F.isLeftMost) . instructions
+
+verify :: (a -> Bool) -> a -> a
+verify pred a = if pred a then a else error "IS is moved out of bouds"
 
 nextInstruction :: Cpu -> Instruction
 nextInstruction = F.get . instructions . program
@@ -58,7 +64,12 @@ program (Cpu _ p) = p
 jumpNext :: Cpu -> Cpu
 jumpNext = withProgram moveRight
   
-newtype Registers = Registers [(Register, Int)]
+newtype Registers = Registers (M.Map Register Int)
+
+makeRegisters :: Registers
+makeRegisters = Registers M.empty
+makeRegistersFromList :: [(Register, Int)] -> Registers
+makeRegistersFromList = Registers . M.fromList
 
 instance Eq Registers where
   (/=) a b = (namesA == namesB) && valuesA /= valuesB
@@ -74,8 +85,7 @@ instance Show Registers where
     vs = map (flip getRegisterValue rs) ns
 
 registerNames :: Registers -> [Register]
-registerNames = nub . sort . map fst . regs where
-  regs (Registers rs) = rs
+registerNames (Registers rs) = M.keys rs
 
 data Cpu = Cpu Registers Program
   deriving (Eq, Show)
@@ -85,7 +95,7 @@ withRegister reg f cpu = (setRegister reg . f . getRegister reg $ cpu) cpu
 
 setRegister :: Register -> Int -> Cpu -> Cpu
 setRegister reg v (Cpu (Registers rs) p) = Cpu (Registers rs') p where
-  rs' = (reg,v):rs
+  rs' = M.insert reg v rs
 
 getRegister :: Register -> Cpu -> Int
 getRegister reg cpu@(Cpu rs _) = getRegisterValue reg rs
@@ -96,7 +106,7 @@ getValue (RegisterValue reg) cpu = getRegister reg cpu
 
 getRegisterValue :: Register -> Registers -> Int
 getRegisterValue name (Registers rs) =
-  case lookup name rs of
+  case M.lookup name rs of
     Just v -> v
     Nothing -> 0
 
@@ -105,12 +115,11 @@ executeCpuInstruction (Set reg val) cpu = jumpNext . setRegister reg (getValue v
 executeCpuInstruction (Add reg val) cpu = jumpNext . executeArithmetic (+) reg val $ cpu
 executeCpuInstruction (Mul reg val) cpu = jumpNext . executeArithmetic (*) reg val $ cpu
 executeCpuInstruction (Mod reg val) cpu = jumpNext . executeArithmetic mod reg val $ cpu
-executeCpuInstruction (Jgz reg val) cpu@(Cpu rs p) =
-  if getRegister reg cpu > 0 then
-    let offset = Offset . getValue val $ cpu in
+executeCpuInstruction (Jgz val offsetVal) cpu@(Cpu rs p) =
+  if getValue val cpu > 0 then
+    let offset = Offset . getValue offsetVal $ cpu in
       jump offset cpu
   else jumpNext cpu
-
 
 executeArithmetic :: (Int -> Int -> Int) -> Register -> Value -> Cpu -> Cpu
 executeArithmetic op reg val cpu = withRegister reg (flip op $ getValue val cpu) cpu where

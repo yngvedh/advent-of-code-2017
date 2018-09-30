@@ -1,3 +1,4 @@
 .stack-work/
 aoc17.cabal
 dist/
+board.todo

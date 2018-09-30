@@ -5,7 +5,7 @@ import Text.Parsec.String
 
 import Prelude hiding (snd, mod)
 
-import AoC.Duet.Core
+import AoC.Duet.Core hiding (instructions)
 import AoC.Misc (mapLeft)
 import AoC.ParsePrimitives
 
@@ -38,7 +38,7 @@ rcv = do
   string "rcv "
   Rcv <$> register
 
-jgz = instrRV "jgz" Jgz
+jgz = instrVV "jgz" Jgz
 
 instrRV :: String -> (Register -> Value -> Instruction) -> Parser Instruction
 instrRV name ctor = do
@@ -48,6 +48,14 @@ instrRV name ctor = do
   char ' '
   ctor reg <$> value
 
+instrVV :: String -> (Value -> Value -> Instruction) -> Parser Instruction
+instrVV name ctor = do
+  string name
+  char ' '
+  val <- value
+  char ' '
+  ctor val <$> value
+  
 value :: Parser Value
 value = do
   lit <- optionMaybe integer

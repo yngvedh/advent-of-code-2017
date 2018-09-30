@@ -28,8 +28,10 @@ main :: IO ()
 main = do
   args <- getArgs
   let day = (read $ head args) :: Int
-  input <- readFile $ "input/" ++ (show day) ++ ".txt"
+  input <- readPuzzleInput day
   solveDay day input
+
+readPuzzleInput day = readFile $ "input/" ++ show day ++ ".txt"
 
 solveDay :: Int -> String -> IO ()
 solveDay day =
@@ -206,5 +208,15 @@ day18 = dayWithParserAndSolver parseDuetProgram day18Solver
 day18Solver is = do
   let ec = makeSoloExecutionContext is
   let ec' = runSoloFirstRcv ec
+  let ec2 = makeDuo is
+  let ec2' = runDuo ec2
+  let reads = ec1reads ec2'
   let hz = soloOutputFrequency ec'
   putStrLn $ "The output frequency when first read is: " ++ (show hz)
+  putStrLn $ "# reads of ec#1:" ++ (show reads)
+
+stepper ec = do
+  putStrLn . showDuo $ ec
+  s <- getLine :: IO String
+  if s == "q" then return () else stepper $ stepDuo ec
+
