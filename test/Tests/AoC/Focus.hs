@@ -50,12 +50,14 @@ describeFocus = describe "AoC.Focus" $ do
       let focus = L.makeFocusAt 3 [1..6]
       L.unfocus focus `shouldBe` [1..6]
 
-
-
   describe "ListMatrixFocus" $ do
     it "should initially focus on the first row and column" $ do
       let focus = M.makeFocus [[1,2],[3,4]]
       M.get focus `shouldBe` 1
+    
+    it "should initially focus on the specified row and columtn" $ do
+      let focus = M.makeFocusAt 1 1 [[1,2,3],[4,5,6],[7,8,9]]
+      M.get focus `shouldBe` 5
 
     it "should not move left when leftmost" $ do
       let f = M.makeFocus [[1]]

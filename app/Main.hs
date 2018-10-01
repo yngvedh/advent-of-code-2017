@@ -18,6 +18,7 @@ import AoC.Generator
 import AoC.PermProm
 import AoC.SpinLock
 import AoC.Duet
+import AoC.Tubes
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -54,6 +55,7 @@ solveDay day =
     16 -> day16
     17 -> day17
     18 -> day18
+    19 -> day19
     _ -> unsolvedDay
 
 
@@ -220,3 +222,10 @@ stepper ec = do
   s <- getLine :: IO String
   if s == "q" then return () else stepper $ stepDuo ec
 
+day19 = dayWithParserAndSolver parseTubes day19Solver
+
+day19Solver tubes = do
+  let letters = runAndRecordLetters tubes
+  let steps = runAndRecordSteps tubes
+  putStrLn $ "Letters: '" ++ letters ++ "'"
+  putStrLn $ "Steps: " ++ show steps

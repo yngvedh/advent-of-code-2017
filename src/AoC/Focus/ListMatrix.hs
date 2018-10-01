@@ -1,6 +1,6 @@
 module AoC.Focus.ListMatrix (
   ListMatrixFocus,
-  makeFocus, unfocus,
+  makeFocus, makeFocusAt, unfocus,
   moveDown, moveUp, moveRight, moveLeft,
   moveLeftMost, moveTopMost,
   isLeftMost, isTopMost, isBottomMost, isRightMost,
@@ -17,19 +17,24 @@ matrix (ListMatrixFocus a) = a
 makeFocus :: [[a]] -> ListMatrixFocus a
 makeFocus = ListMatrixFocus . L.makeFocus . map L.makeFocus
 
+makeFocusAt :: Int -> Int -> [[a]] -> ListMatrixFocus a
+makeFocusAt x y = moveRightX . moveDownY . makeFocus where
+  moveRightX = flip (!!) x . iterate moveRight
+  moveDownY = flip (!!) y . iterate moveDown
+
 unfocus :: ListMatrixFocus a -> [[a]]
 unfocus = map L.unfocus . L.unfocus . matrix
 
+moveUp, moveDown, moveLeft, moveRight, moveLeftMost, moveTopMost :: ListMatrixFocus a -> ListMatrixFocus a
 moveUp = withList L.moveLeft
 moveDown = withList L.moveRight
-
 moveLeft = withList $ fmap L.moveLeft
 moveRight = withList $ fmap L.moveRight
 
 moveLeftMost = withList $ fmap L.moveLeftMost
-moveTopMost :: ListMatrixFocus a -> ListMatrixFocus a
-moveTopMost = withList $ L.moveLeftMost
+moveTopMost = withList L.moveLeftMost
 
+isLeftMost, isRightMost, isTopMost, isBottomMost :: ListMatrixFocus a -> Bool
 isLeftMost = L.isLeftMost . L.get . matrix
 isRightMost = L.isRightMost . L.get . matrix
 isTopMost = L.isLeftMost . matrix
