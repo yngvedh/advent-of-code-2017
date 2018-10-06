@@ -5,7 +5,7 @@ import AoC.ParticleSwarm.Parse
 
 import Test.Hspec
 
-testParticle x x' x'' = Particle (Pos x 0 0) (Vel x' 0 0) (Acc x'' 0 0)
+testParticle x x' x'' = fmap (\n -> (n,0,0)) $ Particle x x' x'' where
 
 describeParticleSwarm = describe "Tests.AoC.ParticleSwarm" $ do
   let sampleParticles = [testParticle 3 2 (-1),

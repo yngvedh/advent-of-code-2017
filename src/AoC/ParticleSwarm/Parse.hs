@@ -8,22 +8,22 @@ import Text.Parsec.String
 import AoC.Misc (mapLeft)
 import AoC.ParsePrimitives
 
-parseParticles :: String -> Either String [Particle]
+parseParticles :: String -> Either String [Particle3d]
 parseParticles = mapLeft show . parse particles ""
 
-particles :: Parser [Particle]
+particles :: Parser [Particle3d]
 particles = particle `sepEndBy` char '\n'
 
 -- p=<4459,-902,279>, v=<-48,66,-14>, a=<-15,-2,0>
-particle :: Parser Particle
+particle :: Parser Particle3d
 particle = do
   string "p="
-  (px,py,pz) <- xyz
+  p <- xyz
   string ", v="
-  (vx,vy,vz) <- xyz
+  v <- xyz
   string ", a="
-  (ax,ay,az) <- xyz
-  return $ Particle (Pos px py pz) (Vel vx vy vz) (Acc ax ay az)
+  a <- xyz
+  return $ Particle p v a
 
 xyz :: Parser (Int,Int,Int)
 xyz = do
