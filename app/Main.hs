@@ -19,6 +19,7 @@ import AoC.PermProm
 import AoC.SpinLock
 import AoC.Duet
 import AoC.Tubes
+import AoC.ParticleSwarm
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -56,6 +57,7 @@ solveDay day =
     17 -> day17
     18 -> day18
     19 -> day19
+    20 -> day20
     _ -> unsolvedDay
 
 
@@ -229,3 +231,8 @@ day19Solver tubes = do
   let steps = runAndRecordSteps tubes
   putStrLn $ "Letters: '" ++ letters ++ "'"
   putStrLn $ "Steps: " ++ show steps
+
+day20 = dayWithParserAndSolver parseParticles day20Solver
+day20Solver particles = do
+  let closest = findClosestLongTerm particles
+  putStrLn $ "Index of closest particle: " ++ (show closest)
