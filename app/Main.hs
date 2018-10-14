@@ -235,4 +235,6 @@ day19Solver tubes = do
 day20 = dayWithParserAndSolver parseParticles day20Solver
 day20Solver particles = do
   let closest = findClosestLongTerm particles
+  let remaining = findRemainingParticles particles
   putStrLn $ "Index of closest particle: " ++ (show closest)
+  putStrLn $ "Remaining particles after collisions: " ++ (show remaining)
