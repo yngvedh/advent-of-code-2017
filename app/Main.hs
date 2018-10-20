@@ -20,6 +20,7 @@ import AoC.SpinLock
 import AoC.Duet
 import AoC.Tubes
 import AoC.ParticleSwarm
+import AoC.Fractal
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -58,6 +59,7 @@ solveDay day =
     18 -> day18
     19 -> day19
     20 -> day20
+    21 -> day21
     _ -> unsolvedDay
 
 
@@ -238,3 +240,12 @@ day20Solver particles = do
   let remaining = findRemainingParticles particles
   putStrLn $ "Index of closest particle: " ++ (show closest)
   putStrLn $ "Remaining particles after collisions: " ++ (show remaining)
+
+day21 = dayWithParserAndSolver parseRules day21Solver
+day21Solver rules = do
+  let imageAfter5 = iterateRuleSet rules 5
+  let litAfter5 = countLitPixels imageAfter5
+  let imageAfter18 = iterateRuleSet rules 18
+  let litAfter18 = countLitPixels imageAfter18
+  putStrLn $ "Numbers of On pixels after 5 iterations: " ++ (show litAfter5)
+  putStrLn $ "Numbers of On pixels after 18 iterations: " ++ (show litAfter18)
