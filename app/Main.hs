@@ -21,6 +21,7 @@ import AoC.Duet
 import AoC.Tubes
 import AoC.ParticleSwarm
 import AoC.Fractal
+import AoC.Sporifica
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -60,8 +61,8 @@ solveDay day =
     19 -> day19
     20 -> day20
     21 -> day21
+    22 -> day22
     _ -> unsolvedDay
-
 
 unsolvedDay :: String -> IO ()
 unsolvedDay _ = putStrLn "Day not solved yet."
@@ -249,3 +250,8 @@ day21Solver rules = do
   let litAfter18 = countLitPixels imageAfter18
   putStrLn $ "Numbers of On pixels after 5 iterations: " ++ (show litAfter5)
   putStrLn $ "Numbers of On pixels after 18 iterations: " ++ (show litAfter18)
+
+day22 = dayWithParserAndSolver parseSporificaGrid day22Solver
+day22Solver grid = do
+  let result = runSimulationAndCountInfected 10000 grid
+  putStrLn $ "Number of infected cells: " ++ show result

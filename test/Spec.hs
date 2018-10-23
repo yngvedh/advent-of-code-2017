@@ -15,6 +15,7 @@ import Tests.AoC.Tubes
 import Tests.AoC.ParticleSwarm
 import Tests.AoC.OldTests
 import Tests.AoC.Fractal
+import Tests.AoC.Sporifica
 
 main :: IO ()
 main = hspec $ do
@@ -35,3 +36,4 @@ main = hspec $ do
   describeTubes
   describeParticleSwarm
   describeFractal
+  describeSporifica
