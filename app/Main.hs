@@ -254,4 +254,6 @@ day21Solver rules = do
 day22 = dayWithParserAndSolver parseSporificaGrid day22Solver
 day22Solver grid = do
   let result = runSimulationAndCountInfected 10000 grid
-  putStrLn $ "Number of infected cells: " ++ show result
+  let result2 = runSimulation2AndCountInfected 10000000 grid
+  putStrLn $ "Number of infected cells (original@10000): " ++ show result
+  putStrLn $ "Number of infected cells (new@10000000):" ++ show result2

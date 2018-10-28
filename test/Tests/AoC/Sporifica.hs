@@ -2,6 +2,7 @@ module Tests.AoC.Sporifica (describeSporifica) where
 
 import AoC.Sporifica.Core
 import AoC.Sporifica.Parse
+import AoC.Sporifica.Simulation
 
 import Test.Hspec
 
@@ -37,14 +38,14 @@ describeSporifica = describe "AoC.Sporifica" $ do
       let carrier = Carrier (Pos 0 0) (Vec 0 1)
       let grid' = makeGridFromPositions [Pos (-1) 0, Pos 1 1, Pos 0 0]
       let carrier' = Carrier (Pos (-1) 0) (Vec (-1) 0)
-      stepCarrier (carrier, grid) `shouldBe` (carrier', grid')
+      stepCarrier (SimulationState carrier grid) `shouldBe` (SimulationState carrier' grid')
 
     it "makes step 1 of the example correctly" $ do
       let grid = makeGridFromPositions [Pos (-1) 0, Pos 1 1, Pos 0 0]
       let carrier = Carrier (Pos (-1) 0) (Vec (-1) 0)
       let grid' = makeGridFromPositions [Pos 1 1, Pos 0 0]
       let carrier' = Carrier (Pos (-1) 1) (Vec 0 1)
-      stepCarrier (carrier, grid) `shouldBe` (carrier', grid')
+      stepCarrier (SimulationState carrier grid) `shouldBe` (SimulationState carrier' grid')
       
   describe "runSimulation" $ do
     it "counts infected nodes correctly in sample (n=70)" $ do
