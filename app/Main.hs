@@ -211,7 +211,6 @@ day17Solver dist = do
   putStrLn $ "The value of pos 1 after 50000000 insertions, is: " ++ (show i')
 
 day18 = dayWithParserAndSolver parseDuetProgram day18Solver
-
 day18Solver is = do
   let ec = makeSoloExecutionContext is
   let ec' = runSoloFirstRcv ec
@@ -222,13 +221,7 @@ day18Solver is = do
   putStrLn $ "The output frequency when first read is: " ++ (show hz)
   putStrLn $ "# reads of ec#1:" ++ (show reads)
 
-stepper ec = do
-  putStrLn . showDuo $ ec
-  s <- getLine :: IO String
-  if s == "q" then return () else stepper $ stepDuo ec
-
 day19 = dayWithParserAndSolver parseTubes day19Solver
-
 day19Solver tubes = do
   let letters = runAndRecordLetters tubes
   let steps = runAndRecordSteps tubes

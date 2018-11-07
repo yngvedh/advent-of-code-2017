@@ -15,22 +15,29 @@ import qualified AoC.Focus.List as F
 parseDuetProgram = P.parseInstructions
 makeSoloExecutionContext :: [C.Instruction] -> S.ExecutionContext S.IoReg
 makeSoloExecutionContext = S.emptyExecutionContext
-runSoloFirstRcv :: (Eq a, S.Channel a) => S.ExecutionContext a -> S.ExecutionContext a
+runSoloFirstRcv :: (Eq a, S.Channel a) =>
+  S.ExecutionContext a ->
+  Either S.ExecutionLog (S.ExecutionContext a)
 runSoloFirstRcv = S.runSoloFirstRcv
-soloOutputFrequency (S.ExecutionContext _ hz _) = hz
 
-runDuo, stepDuo :: (Ch.Channel a, Eq a) => D.ExecutionContext a -> D.ExecutionContext a
---runDuo = D.stepOnce
---runDuo = D.swapCpus . D.stepOnce . D.swapCpus . D.stepOnce
+soloOutputFrequency :: Either S.ExecutionLog (S.ExecutionContext S.IoReg) -> Int
+soloOutputFrequency (Right (S.ExecutionContext _ ch _)) = fst . Ch.channelRead $ ch
+soloOutputFrequency (Left _) = error "soloOutputFrequency called on halted cpu"
+
+runDuo, stepDuo :: (Ch.Channel a, Eq a) =>
+  D.ExecutionContext a ->
+  Either D.ExecutionLogs (D.ExecutionContext a)
 runDuo = D.run
-
-stepDuo = D.swapCpus . D.stepOnce . D.swapCpus . D.stepOnce
+stepDuo = D.stepDuoOnce
 
 makeDuo :: [C.Instruction] -> D.ExecutionContext Ch.IoBuf
 makeDuo = D.emptyExecutionContext
 
-ec1reads :: (Ch.Channel a) => D.ExecutionContext a -> Int
-ec1reads = length . filter isRcv . S.getLog . S.executionLog . D.soloByName "0" where
+ec1reads :: (Ch.Channel a) => Either D.ExecutionLogs (D.ExecutionContext a) -> Int
+ec1reads = length . filter isRcv . getLogs where
+  getLogs :: (Ch.Channel a) => Either D.ExecutionLogs (D.ExecutionContext a) -> [S.LogEntry]
+  getLogs (Right ec) = S.getLog . S.executionLog . D.soloByName "0" $ ec
+  getLogs (Left logs) = S.getLog . D.executionLog1 $ logs
   isRcv (S.Exe (C.Rcv _)) = True
   isRcv _ = False
 

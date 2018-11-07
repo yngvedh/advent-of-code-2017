@@ -49,11 +49,15 @@ verify pred a = if pred a then a else error "IS is moved out of bouds"
 nextInstruction :: Cpu -> Instruction
 nextInstruction = F.get . instructions . program
 
-jump :: Offset -> Cpu -> Cpu
-jump (Offset 0) ec = ec
-jump (Offset o) ec = if o < 0
-  then jump (Offset $ o+1) $ withProgram moveLeft ec
-  else jump (Offset $ o-1) $ withProgram moveRight ec
+jump :: Offset -> Cpu -> Maybe Cpu
+jump (Offset 0) cpu = Just cpu
+jump (Offset o) cpu = if o < 0
+  then do
+    cpu' <- jumpPrev cpu
+    jump (Offset $ o+1) cpu'
+  else do
+    cpu' <- jumpNext cpu
+    jump (Offset $ o-1) cpu'
 
 withProgram :: (Program -> Program) -> Cpu -> Cpu
 withProgram f (Cpu rs is) = Cpu rs (f is)
@@ -61,9 +65,21 @@ withProgram f (Cpu rs is) = Cpu rs (f is)
 program :: Cpu -> Program
 program (Cpu _ p) = p
 
-jumpNext :: Cpu -> Cpu
-jumpNext = withProgram moveRight
-  
+jumpNext, jumpPrev :: Cpu -> Maybe Cpu
+jumpNext = withCpuUnless programAtEnd $ withProgram moveRight
+jumpPrev = withCpuUnless programAtStart $ withProgram moveLeft
+
+withCpuUnless :: (Cpu -> Bool) -> (Cpu -> Cpu) -> Cpu -> Maybe Cpu
+withCpuUnless pred f cpu =
+  if pred cpu
+    then Nothing
+    else Just $ f cpu
+
+programAtStart, programAtEnd :: Cpu -> Bool
+programAtStart = F.isLeftMost . instructions . program
+programAtEnd = F.isRightMost . instructions . program
+
+
 newtype Registers = Registers (M.Map Register Int)
 
 makeRegisters :: Registers
@@ -110,7 +126,7 @@ getRegisterValue name (Registers rs) =
     Just v -> v
     Nothing -> 0
 
-executeCpuInstruction :: Instruction -> Cpu -> Cpu
+executeCpuInstruction :: Instruction -> Cpu -> Maybe Cpu
 executeCpuInstruction (Set reg val) cpu = jumpNext . setRegister reg (getValue val cpu) $ cpu where
 executeCpuInstruction (Add reg val) cpu = jumpNext . executeArithmetic (+) reg val $ cpu
 executeCpuInstruction (Mul reg val) cpu = jumpNext . executeArithmetic (*) reg val $ cpu

@@ -11,6 +11,8 @@ import AoC.Focus.List
 
 import Test.Hspec
 
+fromRight (Right v) = v
+
 testExecutionContext is rs ch pos = ExecutionContext (Cpu rs' p) ch makeExecutionLog where
   rs' = makeRegistersFromList $ map (\(a,b) -> (Register a, b)) rs
   p = Program $ makeFocusAt pos is
@@ -73,7 +75,7 @@ describeDuet = describe "AoC.Duet" $ do
                       testEC [("a", 1)] 4 6,
                       testEC [("a", 4)] 4 7]
 
-      let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ sampleProgram
+      let results = take (length expecteds) . iterate (fromRight . stepOnce) . emptyExecutionContext $ sampleProgram
       mconcat $ zipWith shouldBe results expecteds
 
     it "Should read,write buffer correctly" $ do
@@ -97,12 +99,13 @@ describeDuet = describe "AoC.Duet" $ do
                        testEC [("a", 2)] [3] 6,
                        testEC [("a", 3)] [] 7]
 
-      let results = take (length expecteds) . iterate stepOnce . emptyExecutionContext $ testProgram
-      take (length expecteds) results `shouldBe` expecteds
+      let results = take (length expecteds) . iterate (fromRight . stepOnce) . emptyExecutionContext $ testProgram
+      results `shouldBe` expecteds
 
   describe "runSolo" $
-    it "should run example and produce correct state" $
-      runSoloFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` testEC [("a", 4)] 4 7
+    it "should run example and produce correct state" $ do
+      let expected = Right $ testEC [("a", 4)] 4 7
+      runSoloFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` expected
 
   describe "duo" $ do
     let sampleProgram = [Snd $ LiteralValue 1,
@@ -119,14 +122,14 @@ describeDuet = describe "AoC.Duet" $ do
         let testEc = testDuoExecutionContext IoBuf testProgram
         let ec = D.emptyExecutionContext testProgram :: D.ExecutionContext IoBuf
         let expected = testEc [("a", 0)] [] 1 [("a", 1)] [4] 0
-        D.stepOnce ec `shouldBe` expected
+        D.stepOnce ec `shouldBe` Right expected
 
       it "should swap register 'p' with each other" $ do
         let testProgram = [Snd $ RegisterValue (Register "p"), Set (Register "p") (LiteralValue 3), Rcv $ Register "p", Rcv $ Register "p"]
         let testEc = testDuoExecutionContext IoBuf testProgram
         let ec = D.emptyExecutionContext testProgram :: D.ExecutionContext IoBuf
-        let s0 = D.stepOnce
-        let s1 = D.swapCpus . D.stepOnce . D.swapCpus
+        let s0 = fromRight . D.stepOnce
+        let s1 = \ec -> fromRight $ Right ec >>= D.swapCpus >>= D.stepOnce >>= D.swapCpus
         let ss = compositions $ cycle [s0, s1]
         let ecs = map (\ x -> x ec) ss
         let expecteds = [testEc [("p", 0)] [] 1 [("p", 1)] [0] 0,
@@ -140,7 +143,7 @@ describeDuet = describe "AoC.Duet" $ do
       it "should step through sample correctly" $ do
         let testEc = testDuoExecutionContext IoBuf sampleProgram
         let ec = D.emptyExecutionContext sampleProgram :: D.ExecutionContext IoBuf
-        let step = D.swapCpus . D.stepOnce . D.swapCpus . D.stepOnce
+        let step = fromRight . D.stepDuoOnce where
         let ecs = iterate step ec
         let expecteds = []
         take (length expecteds) ecs `shouldBe` expecteds
@@ -150,14 +153,14 @@ describeDuet = describe "AoC.Duet" $ do
         let testProgram = [Rcv (Register "a")]
         let testEc = testDuoExecutionContext IoBuf testProgram
         let ec = testEc [("a", 1)] [] 0 [("a", 1)] [] 0
-        D.run ec `shouldBe` ec
+        D.run ec `shouldBe` Right ec
 
       it "both solos should swap values" $ do
         let testProgram = [Snd $ RegisterValue $ Register "a", Rcv $ Register "a", Rcv $ Register "a"]
         let testEc = testDuoExecutionContext IoBuf testProgram
         let expected = testEc [("a", 3)] [] 2 [("a", 2)] [] 2
         let ec = testEc [("a", 2)] [] 0 [("a", 3)] [] 0
-        let ec' = D.run ec
+        let (Right ec') = D.run ec
         let l0 = executionLog . D.soloByName "0" $ ec'
         let l1 = executionLog . D.soloByName "1" $ ec'
         numReads l0 `shouldBe` 1
@@ -168,7 +171,7 @@ describeDuet = describe "AoC.Duet" $ do
 
       it "should run sample correctly" $ do
         let ec = D.emptyExecutionContext sampleProgram :: D.ExecutionContext IoBuf
-        let ec' = D.run ec
+        let (Right ec') = D.run ec
         let l = executionLog . D.soloByName "1" $ ec'
         numWrites l `shouldBe` 3
 
@@ -187,28 +190,28 @@ describeDuet = describe "AoC.Duet" $ do
         let ec = testEc [("a", 1)] [] 1 [] [] 0
         let expected = testEc [("a", 1)] [] 0 [] [] 0
         let ec' = D.stepOnce ec
-        ec' `shouldBe` expected
+        ec' `shouldBe` Right expected
 
       it "Should skip next instruction with offset 2" $ do
         let testEc = testDuoExecutionContext IoBuf (makeProgram 2)
         let ec = testEc [("a", 1)] [] 1 [] [] 0
         let expected = testEc [("a", 1)] [] 3 [] [] 0
         let ec' = D.stepOnce ec
-        ec' `shouldBe` expected
+        ec' `shouldBe` Right expected
 
       it "Should skip next 3 instructions with offset 4" $ do
         let testEc = testDuoExecutionContext IoBuf (makeProgram 4)
         let ec = testEc [("a", 1)] [] 1 [] [] 0
         let expected = testEc [("a", 1)] [] 5 [] [] 0
         let ec' = D.stepOnce ec
-        ec' `shouldBe` expected
+        ec' `shouldBe` Right expected
 
       it "Should jump to next instruction if register is <= 0" $ do
         let testEc = testDuoExecutionContext IoBuf (makeProgram 4)
         let ec = testEc [("a", 0)] [] 1 [] [] 0
         let expected = testEc [("a", 0)] [] 2 [] [] 0
         let ec' = D.stepOnce ec
-        ec' `shouldBe` expected
+        ec' `shouldBe` Right expected
 
       it "Should jump if parameter is literal > 0" $ do
         let testProgram = [Jgz (LiteralValue 5) (LiteralValue 0), Rcv (Register "a")]
@@ -216,7 +219,7 @@ describeDuet = describe "AoC.Duet" $ do
         let ec = testEc [] [] 0 [] [] 0
         let expected = testEc [] [] 0 [] [] 0
         let ec' = D.stepOnce ec
-        ec' `shouldBe` expected
+        ec' `shouldBe` Right expected
 
       it "Should not jump if parameter is literal <= 0" $ do
         let testProgram = [Jgz (LiteralValue 0) (LiteralValue 0), Rcv (Register "a")]
@@ -224,7 +227,7 @@ describeDuet = describe "AoC.Duet" $ do
         let ec = testEc [] [] 0 [] [] 0
         let expected = testEc [] [] 1 [] [] 0
         let ec' = D.stepOnce ec
-        ec' `shouldBe` expected
+        ec' `shouldBe` Right expected
 
 
 
