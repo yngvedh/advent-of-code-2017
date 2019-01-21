@@ -9,10 +9,11 @@ module AoC.Duet.Core (
 
 import Data.List (nub, sort)
 import qualified Data.Map.Strict as M
+import qualified Data.Text as T
 
 import qualified AoC.Focus.List as F;
 
-newtype Register = Register String
+newtype Register = Register T.Text
   deriving (Eq, Show, Ord)
 
 newtype Offset = Offset Int
@@ -25,10 +26,12 @@ data Instruction =
   Snd Value |
   Set Register Value |
   Add Register Value |
+  Sub Register Value |
   Mul Register Value |
   Mod Register Value |
   Rcv Register |
-  Jgz Value Value
+  Jgz Value Value |
+  Jnz Value Value
   deriving (Eq, Show)
 
 data Program = Program (F.ListFocus Instruction)
@@ -81,22 +84,16 @@ programAtEnd = F.isRightMost . instructions . program
 
 
 newtype Registers = Registers (M.Map Register Int)
+  deriving (Eq)
 
 makeRegisters :: Registers
 makeRegisters = Registers M.empty
 makeRegistersFromList :: [(Register, Int)] -> Registers
 makeRegistersFromList = Registers . M.fromList
 
-instance Eq Registers where
-  (/=) a b = (namesA == namesB) && valuesA /= valuesB
-    where
-      valuesA = map (flip getRegisterValue a) namesA
-      valuesB = map (flip getRegisterValue b) namesB
-      namesA = registerNames a
-      namesB = registerNames b
-
 instance Show Registers where
-  show rs = concatMap show $ zip ns vs where
+  show rs = "[" ++ ts ++ "]"  where
+    ts = concatMap show $ zip ns vs
     ns = registerNames rs
     vs = map (flip getRegisterValue rs) ns
 
@@ -129,10 +126,14 @@ getRegisterValue name (Registers rs) =
 executeCpuInstruction :: Instruction -> Cpu -> Maybe Cpu
 executeCpuInstruction (Set reg val) cpu = jumpNext . setRegister reg (getValue val cpu) $ cpu where
 executeCpuInstruction (Add reg val) cpu = jumpNext . executeArithmetic (+) reg val $ cpu
+executeCpuInstruction (Sub reg val) cpu = jumpNext . executeArithmetic (-) reg val $ cpu
 executeCpuInstruction (Mul reg val) cpu = jumpNext . executeArithmetic (*) reg val $ cpu
 executeCpuInstruction (Mod reg val) cpu = jumpNext . executeArithmetic mod reg val $ cpu
-executeCpuInstruction (Jgz val offsetVal) cpu@(Cpu rs p) =
-  if getValue val cpu > 0 then
+executeCpuInstruction i@(Jgz val offsetVal) cpu = conditionalJump ((<) 0) val offsetVal cpu
+executeCpuInstruction i@(Jnz val offsetVal) cpu = conditionalJump ((/=) 0) val offsetVal cpu
+
+conditionalJump pred val offsetVal cpu@(Cpu rs p) =
+  if pred $ getValue val cpu then
     let offset = Offset . getValue offsetVal $ cpu in
       jump offset cpu
   else jumpNext cpu

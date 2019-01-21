@@ -17,14 +17,6 @@ testExecutionContext is rs ch pos = ExecutionContext (Cpu rs' p) ch makeExecutio
   rs' = makeRegistersFromList $ map (\(a,b) -> (Register a, b)) rs
   p = Program $ makeFocusAt pos is
 
-numReads, numWrites :: ExecutionLog -> Int
-numReads (ExecutionLog is) = length . filter isRcv $ is where
-  isRcv (Exe (Rcv _)) = True
-  isRcv _ = False
-numWrites (ExecutionLog is) = length . filter isSnd $ is where
-  isSnd (Exe (Snd _)) = True
-  isSnd _ = False
-
 testDuoExecutionContext :: (Channel a) => (b -> a) -> [Instruction] -> [(String, Int)] -> b -> Int -> [(String,Int)] -> b -> Int -> D.ExecutionContext a
 testDuoExecutionContext mkCh is rs ch pos rs' ch' pos' = D.ExecutionContext ("0", testExecutionContext is rs (mkCh ch) pos) ("1", testExecutionContext is rs' (mkCh ch') pos')
 
@@ -102,10 +94,41 @@ describeDuet = describe "AoC.Duet" $ do
       let results = take (length expecteds) . iterate (fromRight . stepOnce) . emptyExecutionContext $ testProgram
       results `shouldBe` expecteds
 
-  describe "runSolo" $
+  describe "runSoloFirstRcv" $ do
     it "should run example and produce correct state" $ do
       let expected = Right $ testEC [("a", 4)] 4 7
       runSoloFirstRcv (emptyExecutionContext sampleProgram) `shouldBe` expected
+  
+  describe "runSolo" $ do
+    it "should run program and terminate" $ do
+      let program = [Set (Register "a") (LiteralValue 4),
+                     Set (Register "b") (LiteralValue 5),
+                     Set (Register "b") (LiteralValue 6)]
+      let ec = emptyExecutionContext program :: ExecutionContext IoReg
+      let expected = Left (ExecutionLog {
+        lastEntry = Exe $ Set (Register "b") (LiteralValue 6),
+        numRcvs = 0,
+        numMuls = 0,
+        numSnds = 0
+      })
+      runSolo ec `shouldBe` expected
+
+  describe "stepOnce" $ do
+    it "should step through program and terminate" $ do
+      let program = [Set (Register "a") (LiteralValue 4),
+                     Set (Register "b") (LiteralValue 5),
+                     Set (Register "b") (LiteralValue 6)]
+      let ec = emptyExecutionContext program :: ExecutionContext IoReg
+      let ec1 = stepOnce ec
+      let ec2 = stepOnce . fromRight $ ec1
+      let ec3 = stepOnce . fromRight $ ec2
+      ec1 `shouldBe` Right (testExecutionContext program [("a", 4)] (IoReg 0) 1)
+      ec2 `shouldBe` Right (testExecutionContext program [("a", 4), ("b", 5)] (IoReg 0) 2)
+      ec3 `shouldBe` Left (ExecutionLog {
+        lastEntry = Exe (Set (Register "b") (LiteralValue 6)),
+        numRcvs = 0,
+        numMuls = 0,
+        numSnds = 0 })
 
   describe "duo" $ do
     let sampleProgram = [Snd $ LiteralValue 1,
@@ -163,17 +186,17 @@ describeDuet = describe "AoC.Duet" $ do
         let (Right ec') = D.run ec
         let l0 = executionLog . D.soloByName "0" $ ec'
         let l1 = executionLog . D.soloByName "1" $ ec'
-        numReads l0 `shouldBe` 1
-        numReads l1 `shouldBe` 1
-        numWrites l0 `shouldBe` 1
-        numWrites l1 `shouldBe` 1
+        numRcvs l0 `shouldBe` 1
+        numRcvs l1 `shouldBe` 1
+        numSnds l0 `shouldBe` 1
+        numSnds l1 `shouldBe` 1
         ec' `shouldBe` expected
 
       it "should run sample correctly" $ do
         let ec = D.emptyExecutionContext sampleProgram :: D.ExecutionContext IoBuf
         let (Right ec') = D.run ec
         let l = executionLog . D.soloByName "1" $ ec'
-        numWrites l `shouldBe` 3
+        numSnds l `shouldBe` 3
 
 
     describe "Jgz" $ do

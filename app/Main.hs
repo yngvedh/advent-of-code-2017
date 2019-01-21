@@ -22,6 +22,7 @@ import AoC.Tubes
 import AoC.ParticleSwarm
 import AoC.Fractal
 import AoC.Sporifica
+import AoC.CoProcessor
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -62,6 +63,7 @@ solveDay day =
     20 -> day20
     21 -> day21
     22 -> day22
+    23 -> day23
     _ -> unsolvedDay
 
 unsolvedDay :: String -> IO ()
@@ -250,3 +252,10 @@ day22Solver grid = do
   let result2 = runSimulation2AndCountInfected 10000000 grid
   putStrLn $ "Number of infected cells (original@10000): " ++ show result
   putStrLn $ "Number of infected cells (new@10000000):" ++ show result2
+
+day23 = dayWithParserAndSolver parseDuetProgram day23Solver
+day23Solver is = do
+  let ec = makeSoloExecutionContext is
+  let ec' = runCoProcessor ec
+  let muls = countMuls ec'
+  putStrLn $ "The number of Mul instructions executed is " ++ (show muls)

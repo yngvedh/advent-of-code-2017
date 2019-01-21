@@ -1,11 +1,13 @@
 module AoC.Duet.Solo (
   ExecutionContext(..), Channel, IoReg(..), IoBuf(..), ExecutionLog(..), LogEntry(..),
-  stepOnce, runSoloFirstRcv, emptyExecutionContext, preparedExecutionContext,
+  stepOnce, runSoloFirstRcv, emptyExecutionContext, preparedExecutionContext, runSolo,
   executeInstruction, cpu, channel, nextInstruction, withCpu, setOutput, withCpuAndLog, setChannel,
-  makeExecutionLog, executionLog, logWait, logSkip, logInstr, getLog, showInstr, showLogEntry) where
+  makeExecutionLog, executionLog,
+  logWait, logSkip, logInstr,
+  getEitherLog, showInstr, showLogEntry) where
 
 import Data.List (intersperse)
-import Debug.Trace (trace)
+import qualified Data.Text as T
 
 import AoC.Focus.List
 import AoC.Duet.Core
@@ -18,10 +20,14 @@ showLogEntry Skip = "Skip"
 showLogEntry Wait = "Wait"
 showLogEntry (Exe i) = showInstr i
 
-data ExecutionLog = ExecutionLog [LogEntry]
-    deriving (Show, Eq)
+data ExecutionLog = ExecutionLog {
+  lastEntry :: !LogEntry,
+  numMuls :: !Int,
+  numRcvs :: !Int,
+  numSnds :: !Int 
+} deriving (Show, Eq)
 
-data ExecutionContext a = ExecutionContext Cpu a ExecutionLog
+data ExecutionContext a = ExecutionContext Cpu a !ExecutionLog
 
 instance (Eq a) => Eq (ExecutionContext a) where
   (==) (ExecutionContext cpu1 ch1 _) (ExecutionContext cpu2 ch2 _) = cpu1 == cpu2 && ch1 == ch2
@@ -38,17 +44,22 @@ showInstr (Mul r v) = "Mul" ++ showReg r ++ showVal v
 showInstr (Mod r v) = "Mod" ++ showReg r ++ showVal v
 showInstr (Rcv r) = "Rcv" ++ showReg r
 showInstr (Jgz r v) = "Jgz" ++ showVal r ++ showVal v
-showReg (Register name) = "," ++ name
+showInstr (Jnz r v) = "Jnz" ++ showVal r ++ showVal v
+showReg (Register name) = "," ++ show name
 showVal (LiteralValue v) = "," ++ show v
 showVal (RegisterValue r) = showReg r
 
-makeExecutionLog = ExecutionLog []
+makeExecutionLog = ExecutionLog { lastEntry = Skip, numMuls = 0, numRcvs = 0, numSnds = 0 }
 
 emptyExecutionContext :: (Channel a) => [Instruction] -> ExecutionContext a
 emptyExecutionContext is = ExecutionContext (Cpu makeRegisters (makeProgram is)) makeChannel makeExecutionLog
 
 preparedExecutionContext :: (Channel a) => [Instruction] -> Int -> ExecutionContext a
-preparedExecutionContext is v = ExecutionContext (Cpu (makeRegistersFromList [(Register "p", v)]) (makeProgram is)) makeChannel makeExecutionLog
+preparedExecutionContext is v = 
+  ExecutionContext
+    (Cpu (makeRegistersFromList [(Register $ T.pack "p", v)]) (makeProgram is))
+    makeChannel
+    makeExecutionLog
 
 withCpu :: (Cpu -> Maybe Cpu) -> ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
 withCpu f (ExecutionContext c hz log) = case f c of
@@ -71,15 +82,14 @@ runSoloFirstRcv ec = do
     else runSoloFirstRcv ec'
 
 hasReceived :: ExecutionContext a -> Bool
-hasReceived ec = any isRcv . getLog . executionLog $ ec where
-  isRcv (Exe (Rcv _)) = True
-  isRcv _ = False
+hasReceived ec = ((<) 0) . numRcvs . executionLog $ ec where
 
-runSolo :: (Eq a, Channel a) => ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
+runSolo :: (Eq a, Channel a, Show a) => ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
 runSolo ec = do
   ec' <- stepOnce ec
-  runSolo ec'
---  runSolo . stepOnce $ ec
+  if ec == ec'
+    then return ec
+    else runSolo ec'
 
 cpu :: ExecutionContext a -> Cpu
 cpu (ExecutionContext cpu _ _) = cpu
@@ -94,26 +104,19 @@ executeInstruction :: (Channel a, Eq a)
   => Instruction
   -> ExecutionContext a
   -> Either ExecutionLog (ExecutionContext a)
-executeInstruction i@(Snd hzVal) ec = do
+executeInstruction i@(Snd hzVal) ec =
   let hz = getValue hzVal $ cpu ec
-  ec' <- withCpu jumpNext . setOutput hz $ ec
-  return $ logInstr i ec'
+  in withCpu jumpNext . setOutput hz . logInstr i $ ec
 executeInstruction i@(Rcv reg) ec@(ExecutionContext cpu ch log) =
   if getRegister reg cpu /= 0
-  then do
-    let (hz, ec') = getOutput ec
-    ec'' <- withCpu (jumpNext . (setRegister reg hz)) ec'
-    return $ logInstr i ec''
+  then
+    let (hz, ec') = getOutput . logInstr i $ ec
+    in withCpu (jumpNext . (setRegister reg hz)) ec'
   else
-    withCpu jumpNext ec >>= Right . logSkip
+    withCpu jumpNext . logSkip $ ec
 
---    ec' <- withCpu jumpNext ec
---    return $ logSkip ec'
-
---    ec >>= (withCpu jumpNext) >>= (return . logSkip)
-executeInstruction i ec = do
-  ec' <- withFailingCpu (executeCpuInstruction i) $ ec
-  return  $ logInstr i ec'
+executeInstruction i ec =
+  withFailingCpu (executeCpuInstruction i) $ logInstr i ec
 
 withFailingCpu :: (Cpu -> Maybe Cpu) -> ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
 withFailingCpu f ec@(ExecutionContext cpu ch log) =
@@ -146,8 +149,14 @@ logWait = appendLog Wait
 logSkip = appendLog Skip
 
 appendLog :: LogEntry -> ExecutionContext a -> ExecutionContext a
-appendLog e = withLog append where
-  append (ExecutionLog is) = ExecutionLog (e:is)
+appendLog e = withLog $ traceInstr . setLast where
+  setLast log = log { lastEntry = e }
+  traceInstr log = case e of
+    (Exe (Mul _ _)) -> log { numMuls = 1 + numMuls log }
+    (Exe (Rcv _))   -> log { numRcvs = 1 + numRcvs log }
+    (Exe (Snd _))   -> log { numSnds = 1 + numSnds log }
+    _               -> log
 
-getLog :: ExecutionLog -> [LogEntry]
-getLog (ExecutionLog is) = is
+getEitherLog :: Either ExecutionLog (ExecutionContext a) -> ExecutionLog
+getEitherLog (Left log) = log
+getEitherLog (Right ec) = executionLog ec

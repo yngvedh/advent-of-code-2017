@@ -9,6 +9,8 @@ import AoC.Duet.Core hiding (instructions)
 import AoC.Misc (mapLeft)
 import AoC.ParsePrimitives
 
+import qualified Data.Text as T
+
 parseInstructions :: String -> Either String [Instruction]
 parseInstructions = mapLeft show . parse instructions ""
 
@@ -16,12 +18,20 @@ instructions :: Parser [Instruction]
 instructions = instruction `sepEndBy` char '\n'
 
 instruction :: Parser Instruction
-instruction = try snd <|> try set <|> try add <|> try mul <|> try mod <|> try rcv <|> try jgz
+instruction = try snd
+          <|> try set
+          <|> try add
+          <|> try mul
+          <|> try mod
+          <|> try rcv
+          <|> try jgz
+          <|> try jnz
+          <|> try sub
 
 register :: Parser Register
 register = do
   reg <- many1 letter
-  return $ Register reg
+  return $ Register $ T.pack reg
 
 snd :: Parser Instruction
 snd = do
@@ -30,6 +40,7 @@ snd = do
 
 set = instrRV "set" Set
 add = instrRV "add" Add
+sub = instrRV "sub" Add
 mul = instrRV "mul" Mul
 mod = instrRV "mod" Mod
 
@@ -39,6 +50,7 @@ rcv = do
   Rcv <$> register
 
 jgz = instrVV "jgz" Jgz
+jnz = instrVV "jnz" Jnz
 
 instrRV :: String -> (Register -> Value -> Instruction) -> Parser Instruction
 instrRV name ctor = do
