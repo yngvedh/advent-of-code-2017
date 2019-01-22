@@ -15,29 +15,21 @@ import qualified AoC.Focus.List as F
 parseDuetProgram = P.parseInstructions
 makeSoloExecutionContext :: [C.Instruction] -> S.ExecutionContext S.IoReg
 makeSoloExecutionContext = S.emptyExecutionContext
-runSoloFirstRcv :: (Eq a, S.Channel a) =>
-  S.ExecutionContext a ->
-  Either S.ExecutionLog (S.ExecutionContext a)
+runSoloFirstRcv :: (Eq a, S.Channel a) => S.ExecutionContext a -> S.ExecutionContext a
 runSoloFirstRcv = S.runSoloFirstRcv
 
-soloOutputFrequency :: Either S.ExecutionLog (S.ExecutionContext S.IoReg) -> Int
-soloOutputFrequency (Right (S.ExecutionContext _ ch _)) = fst . Ch.channelRead $ ch
-soloOutputFrequency (Left _) = error "soloOutputFrequency called on halted cpu"
+soloOutputFrequency :: S.ExecutionContext S.IoReg -> Int
+soloOutputFrequency (S.ExecutionContext _ ch _) = fst . Ch.channelRead $ ch
 
-runDuo, stepDuo :: (Ch.Channel a, Eq a) =>
-  D.ExecutionContext a ->
-  Either D.ExecutionLogs (D.ExecutionContext a)
+runDuo, stepDuo :: (Ch.Channel a, Eq a) => D.ExecutionContext a -> D.ExecutionContext a
 runDuo = D.run
 stepDuo = D.stepDuoOnce
 
 makeDuo :: [C.Instruction] -> D.ExecutionContext Ch.IoBuf
 makeDuo = D.emptyExecutionContext
 
-ec1reads :: (Ch.Channel a) => Either D.ExecutionLogs (D.ExecutionContext a) -> Int
-ec1reads = S.numRcvs . getLog where
-  getLog :: (Ch.Channel a) => Either D.ExecutionLogs (D.ExecutionContext a) -> S.ExecutionLog
-  getLog (Right ec) = S.executionLog . D.soloByName "0" $ ec
-  getLog (Left logs) = D.executionLog1 $ logs
+ec1reads :: (Ch.Channel a) => D.ExecutionContext a -> Int
+ec1reads = S.numRcvs . S.executionLog . D.soloByName "0"
 
 showSolo :: (Show a) => S.ExecutionContext a -> String
 showSolo (S.ExecutionContext cpu@(C.Cpu regs prog) ch log) =

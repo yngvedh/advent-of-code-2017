@@ -3,8 +3,8 @@ module AoC.Duet.Solo (
   stepOnce, runSoloFirstRcv, emptyExecutionContext, preparedExecutionContext, runSolo,
   executeInstruction, cpu, channel, nextInstruction, withCpu, setOutput, withCpuAndLog, setChannel,
   makeExecutionLog, executionLog,
-  logWait, logSkip, logInstr,
-  getEitherLog, showInstr, showLogEntry) where
+  logWait, logSkip, logHalt, logInstr,
+  showInstr, showLogEntry) where
 
 import Data.List (intersperse)
 import qualified Data.Text as T
@@ -13,18 +13,19 @@ import AoC.Focus.List
 import AoC.Duet.Core
 import AoC.Duet.Channel
 
-data LogEntry = Wait | Skip | Exe Instruction
+data LogEntry = Exe Instruction | Wait | Skip | Halt
     deriving (Show, Eq)
 
 showLogEntry Skip = "Skip"
 showLogEntry Wait = "Wait"
+showLogEntry Halt = "Halt"
 showLogEntry (Exe i) = showInstr i
 
 data ExecutionLog = ExecutionLog {
   lastEntry :: !LogEntry,
   numMuls :: !Int,
   numRcvs :: !Int,
-  numSnds :: !Int 
+  numSnds :: !Int
 } deriving (Show, Eq)
 
 data ExecutionContext a = ExecutionContext Cpu a !ExecutionLog
@@ -36,6 +37,7 @@ instance (Show a) => Show (ExecutionContext a) where
   show (ExecutionContext (Cpu rs is) hz log) = "ExecutionContext:\nCpu " ++ show rs ++ " " ++ show hz ++ "\n" ++ show' is where
     show' :: Program -> String
     show' (Program l) = concat $ (intersperse " " . map showInstr . prefix $ l) ++ ["[" ++ showInstr (get l) ++ "]"] ++ (intersperse " " . map showInstr . postfix $ l)
+    show' OutOfBounds = "[out of bounds]"
 
 showInstr (Snd v) = "Snd" ++ showVal v
 showInstr (Set r v) = "Set" ++ showReg r ++ showVal v
@@ -61,35 +63,36 @@ preparedExecutionContext is v =
     makeChannel
     makeExecutionLog
 
-withCpu :: (Cpu -> Maybe Cpu) -> ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
-withCpu f (ExecutionContext c hz log) = case f c of
-  Just c' -> Right $ ExecutionContext c' hz log
-  _       -> Left log
+withCpu :: (Cpu -> Cpu) -> ExecutionContext a -> ExecutionContext a
+withCpu f ec@(ExecutionContext c hz log) = if isFaulted c' then logHalt ec' else ec' where
+  c' = f c
+  ec' = ExecutionContext c' hz log
 
 withLog :: (ExecutionLog -> ExecutionLog) -> ExecutionContext a -> ExecutionContext a
 withLog f (ExecutionContext cpu ch log) = ExecutionContext cpu ch (f log)
 
-stepOnce :: (Eq a, Channel a) => ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
-stepOnce ec =
-  executeInstruction instr ec where
-    instr = nextInstruction . cpu $ ec
+stepOnce :: (Eq a, Channel a) => ExecutionContext a -> ExecutionContext a
+stepOnce ec = executeInstruction instr ec
+  where instr = nextInstruction . cpu $ ec
 
-runSoloFirstRcv :: (Eq a, Channel a) => ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
-runSoloFirstRcv ec = do
-  ec' <- stepOnce ec
-  if hasReceived ec'
-    then return ec'
+runSoloFirstRcv :: (Eq a, Channel a) => ExecutionContext a -> ExecutionContext a
+runSoloFirstRcv ec = let
+  ec' = stepOnce ec
+  in if hasReceived ec'
+    then ec'
     else runSoloFirstRcv ec'
 
 hasReceived :: ExecutionContext a -> Bool
 hasReceived ec = ((<) 0) . numRcvs . executionLog $ ec where
 
-runSolo :: (Eq a, Channel a, Show a) => ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
-runSolo ec = do
-  ec' <- stepOnce ec
-  if ec == ec'
-    then return ec
-    else runSolo ec'
+runSolo :: (Eq a, Channel a, Show a) => ExecutionContext a -> ExecutionContext a
+runSolo ec = let
+  ec' = stepOnce ec
+  in case lastEntry $ executionLog ec' of
+    Halt -> ec'
+    Wait -> ec'
+    Skip -> ec'
+    _    -> runSolo ec'
 
 cpu :: ExecutionContext a -> Cpu
 cpu (ExecutionContext cpu _ _) = cpu
@@ -100,10 +103,7 @@ channel (ExecutionContext _ c _) = c
 executionLog :: ExecutionContext a -> ExecutionLog
 executionLog (ExecutionContext _ _ l) = l
 
-executeInstruction :: (Channel a, Eq a)
-  => Instruction
-  -> ExecutionContext a
-  -> Either ExecutionLog (ExecutionContext a)
+executeInstruction :: (Channel a, Eq a) => Instruction -> ExecutionContext a -> ExecutionContext a
 executeInstruction i@(Snd hzVal) ec =
   let hz = getValue hzVal $ cpu ec
   in withCpu jumpNext . setOutput hz . logInstr i $ ec
@@ -115,21 +115,10 @@ executeInstruction i@(Rcv reg) ec@(ExecutionContext cpu ch log) =
   else
     withCpu jumpNext . logSkip $ ec
 
-executeInstruction i ec =
-  withFailingCpu (executeCpuInstruction i) $ logInstr i ec
+executeInstruction i ec = withCpu (executeCpuInstruction i) $ logInstr i ec
 
-withFailingCpu :: (Cpu -> Maybe Cpu) -> ExecutionContext a -> Either ExecutionLog (ExecutionContext a)
-withFailingCpu f ec@(ExecutionContext cpu ch log) =
-  case f cpu of
-    Just cpu' -> Right $ ExecutionContext cpu' ch log
-    Nothing   -> Left . executionLog $ ec
-
-withCpuAndLog :: 
-  Instruction ->
-  (Cpu -> Maybe Cpu) ->
-  ExecutionContext a ->
-  Either ExecutionLog (ExecutionContext a)
-withCpuAndLog i f ec = withFailingCpu f ec >>= return . logInstr i
+withCpuAndLog :: Instruction -> (Cpu -> Cpu) -> ExecutionContext a -> ExecutionContext a
+withCpuAndLog i f ec = logInstr i . withCpu f $ ec
   
 setOutput :: (Channel a) => Int -> ExecutionContext a -> ExecutionContext a
 setOutput hz (ExecutionContext cpu ch log) = ExecutionContext cpu (channelWrite hz ch) log
@@ -144,9 +133,10 @@ setChannel ch (ExecutionContext cpu _ log) = ExecutionContext cpu ch log
 logInstr :: Instruction -> ExecutionContext a -> ExecutionContext a
 logInstr = appendLog . Exe
 
-logWait, logSkip :: ExecutionContext a -> ExecutionContext a
+logWait, logSkip, logHalt :: ExecutionContext a -> ExecutionContext a
 logWait = appendLog Wait
 logSkip = appendLog Skip
+logHalt = appendLog Halt
 
 appendLog :: LogEntry -> ExecutionContext a -> ExecutionContext a
 appendLog e = withLog $ traceInstr . setLast where
@@ -156,7 +146,3 @@ appendLog e = withLog $ traceInstr . setLast where
     (Exe (Rcv _))   -> log { numRcvs = 1 + numRcvs log }
     (Exe (Snd _))   -> log { numSnds = 1 + numSnds log }
     _               -> log
-
-getEitherLog :: Either ExecutionLog (ExecutionContext a) -> ExecutionLog
-getEitherLog (Left log) = log
-getEitherLog (Right ec) = executionLog ec

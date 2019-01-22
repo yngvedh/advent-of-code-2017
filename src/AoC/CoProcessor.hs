@@ -17,8 +17,8 @@ parseCoProcessorProgram = P.parseInstructions
 makeCoProcessorExecutionContext :: [C.Instruction] -> S.ExecutionContext S.IoReg
 makeCoProcessorExecutionContext = S.emptyExecutionContext
 
-runCoProcessor :: (Ch.Channel a, Eq a, Show a) => S.ExecutionContext a -> Either S.ExecutionLog (S.ExecutionContext a)
+runCoProcessor :: (Ch.Channel a, Eq a, Show a) => S.ExecutionContext a -> S.ExecutionContext a
 runCoProcessor = S.runSolo
 
-countMuls :: Show a => Either S.ExecutionLog (S.ExecutionContext a) -> Int
-countMuls res = S.numMuls . S.getEitherLog $ traceShow res res
+countMuls :: Show a => S.ExecutionContext a -> Int
+countMuls res = S.numMuls . S.executionLog $ res

@@ -5,7 +5,7 @@ module AoC.Duet.Core (
   getValue, jumpNext,
   executeCpuInstruction, nextInstruction, makeProgram,
   makeRegisters, makeRegistersFromList,
-  instructions) where
+  instructions, isFaulted) where
 
 import Data.List (nub, sort)
 import qualified Data.Map.Strict as M
@@ -34,7 +34,7 @@ data Instruction =
   Jnz Value Value
   deriving (Eq, Show)
 
-data Program = Program (F.ListFocus Instruction)
+data Program = Program (F.ListFocus Instruction) | OutOfBounds
   deriving (Eq, Show)
 
 instructions (Program f) = f
@@ -43,40 +43,42 @@ makeProgram :: [Instruction] -> Program
 makeProgram = Program . F.makeFocus
 
 moveRight, moveLeft :: Program -> Program
-moveRight = Program . F.moveRight . verify (not . F.isRightMost) . instructions
-moveLeft = Program . F.moveLeft . verify (not . F.isLeftMost) . instructions
+moveRight = mapProgramIf F.moveRight (not . F.isRightMost)
+moveLeft = mapProgramIf F.moveLeft (not . F.isLeftMost)
 
-verify :: (a -> Bool) -> a -> a
-verify pred a = if pred a then a else error "IS is moved out of bouds"
+mapProgramIf ::
+  (F.ListFocus Instruction -> F.ListFocus Instruction) ->
+  (F.ListFocus Instruction -> Bool) ->
+  Program ->
+  Program
+mapProgramIf f pred p =
+  if pred focus
+    then Program . f $ focus
+    else OutOfBounds
+  where
+    focus = instructions p
+
+isFaulted :: Cpu -> Bool
+isFaulted = (==) OutOfBounds . program
 
 nextInstruction :: Cpu -> Instruction
 nextInstruction = F.get . instructions . program
 
-jump :: Offset -> Cpu -> Maybe Cpu
-jump (Offset 0) cpu = Just cpu
+jump :: Offset -> Cpu -> Cpu
+jump (Offset 0) cpu = cpu
 jump (Offset o) cpu = if o < 0
-  then do
-    cpu' <- jumpPrev cpu
-    jump (Offset $ o+1) cpu'
-  else do
-    cpu' <- jumpNext cpu
-    jump (Offset $ o-1) cpu'
+  then jump (Offset $ o+1) (jumpPrev cpu)
+  else jump (Offset $ o-1) (jumpNext cpu)
+
+jumpNext, jumpPrev :: Cpu -> Cpu
+jumpNext = withProgram moveRight
+jumpPrev = withProgram moveLeft
 
 withProgram :: (Program -> Program) -> Cpu -> Cpu
 withProgram f (Cpu rs is) = Cpu rs (f is)
 
 program :: Cpu -> Program
 program (Cpu _ p) = p
-
-jumpNext, jumpPrev :: Cpu -> Maybe Cpu
-jumpNext = withCpuUnless programAtEnd $ withProgram moveRight
-jumpPrev = withCpuUnless programAtStart $ withProgram moveLeft
-
-withCpuUnless :: (Cpu -> Bool) -> (Cpu -> Cpu) -> Cpu -> Maybe Cpu
-withCpuUnless pred f cpu =
-  if pred cpu
-    then Nothing
-    else Just $ f cpu
 
 programAtStart, programAtEnd :: Cpu -> Bool
 programAtStart = F.isLeftMost . instructions . program
@@ -123,7 +125,7 @@ getRegisterValue name (Registers rs) =
     Just v -> v
     Nothing -> 0
 
-executeCpuInstruction :: Instruction -> Cpu -> Maybe Cpu
+executeCpuInstruction :: Instruction -> Cpu -> Cpu
 executeCpuInstruction (Set reg val) cpu = jumpNext . setRegister reg (getValue val cpu) $ cpu where
 executeCpuInstruction (Add reg val) cpu = jumpNext . executeArithmetic (+) reg val $ cpu
 executeCpuInstruction (Sub reg val) cpu = jumpNext . executeArithmetic (-) reg val $ cpu
