@@ -2,7 +2,9 @@ module AoC.CoProcessor (
   parseCoProcessorProgram,
   makeCoProcessorExecutionContext,
   runCoProcessor,
-  countMuls
+  countMuls,
+  runCountNonPrimesOptimized,
+  runCountMulsOptimized
 ) where
 
 import qualified AoC.Duet.Core as C
@@ -22,3 +24,15 @@ runCoProcessor = S.runSolo
 
 countMuls :: Show a => S.ExecutionContext a -> Int
 countMuls res = S.numMuls . S.executionLog $ res
+
+runCountNonPrimesOptimized, runCountMulsOptimized :: Int -> Int -> Int
+runCountNonPrimesOptimized a b = length . filter isPrime $ ns where
+  ns = [a,a+17..b]
+  isPrime n = any ((==) 0 . mod n) fs where
+    fs = [2..maxF] :: [Int]
+    maxF = ceiling (sqrt $ fromIntegral n)
+
+runCountMulsOptimized a b = sum . map countMuls $ ns where
+  ns = [a,a+17..b]
+  countMuls n = length [1| a <- ns', b <- ns'] where
+    ns' = [2..(n-1)]

@@ -255,7 +255,10 @@ day22Solver grid = do
 
 day23 = dayWithParserAndSolver parseDuetProgram day23Solver
 day23Solver is = do
-  let ec = makeSoloExecutionContext is
-  let ec' = runCoProcessor ec
-  let muls = countMuls ec'
+--  let ec = makeSoloExecutionContext is
+--  let ec' = runCoProcessor ec
+--  let muls = countMuls ec'
+  let muls = runCountMulsOptimized 81 81
+  let fs = runCountNonPrimesOptimized 108100 125100
   putStrLn $ "The number of Mul instructions executed is " ++ (show muls)
+  putStrLn $ "The number of Primes found are " ++ (show fs)
