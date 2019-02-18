@@ -1,0 +1,16 @@
+b = 108100
+c = 125100
+for (b = 108100 ; b != c ; b += 17)
+{
+    found = false
+    for(d = 2 ; d != b ; d++)
+    {
+        for(e = 2 ; e != b ; e++)
+        {
+            if d*e != b
+                found = true
+        }
+    }
+    if !found
+        h++
+}
