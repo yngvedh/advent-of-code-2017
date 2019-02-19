@@ -16,6 +16,7 @@ import Tests.AoC.ParticleSwarm
 import Tests.AoC.OldTests
 import Tests.AoC.Fractal
 import Tests.AoC.Sporifica
+import Tests.AoC.Bridge
 
 main :: IO ()
 main = hspec $ do
@@ -37,3 +38,4 @@ main = hspec $ do
   describeParticleSwarm
   describeFractal
   describeSporifica
+  describeBridge

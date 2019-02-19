@@ -23,6 +23,7 @@ import AoC.ParticleSwarm
 import AoC.Fractal
 import AoC.Sporifica
 import AoC.CoProcessor
+import AoC.Bridge
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -64,6 +65,7 @@ solveDay day =
     21 -> day21
     22 -> day22
     23 -> day23
+    24 -> day24
     _ -> unsolvedDay
 
 unsolvedDay :: String -> IO ()
@@ -262,3 +264,12 @@ day23Solver is = do
   let fs = runCountNonPrimesOptimized 108100 125100
   putStrLn $ "The number of Mul instructions executed is " ++ (show muls)
   putStrLn $ "The number of Primes found are " ++ (show fs)
+
+day24 = dayWithParserAndSolver parseMagComps day24Solver
+day24Solver comps = do
+  let bridge = buildStrongestBridge comps
+  let strength = computeBridgeStrength bridge
+  let bridge' = buildLongestBridge comps
+  let strength' = computeBridgeStrength bridge'
+  putStrLn $ "The strongest bridge has strength " ++ show strength
+  putStrLn $ "The longest, strongest bridge has strength " ++ show strength'
