@@ -24,6 +24,7 @@ import AoC.Fractal
 import AoC.Sporifica
 import AoC.CoProcessor
 import AoC.Bridge
+import AoC.Turing
 
 import Data.Char (digitToInt)
 import Data.List (find)
@@ -66,6 +67,7 @@ solveDay day =
     22 -> day22
     23 -> day23
     24 -> day24
+    25 -> day25
     _ -> unsolvedDay
 
 unsolvedDay :: String -> IO ()
@@ -273,3 +275,10 @@ day24Solver comps = do
   let strength' = computeBridgeStrength bridge'
   putStrLn $ "The strongest bridge has strength " ++ show strength
   putStrLn $ "The longest, strongest bridge has strength " ++ show strength'
+
+day25 = dayWithParserAndSolver parseTuringSetup day25Solver
+day25Solver setup = do
+  let tm = makeTuringMachine setup
+  let tm' = runTuringMachine tm
+  let checksum = turingChecksum tm'
+  putStrLn $ "The checksum after running turing machine is " ++ show checksum

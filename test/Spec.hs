@@ -17,6 +17,7 @@ import Tests.AoC.OldTests
 import Tests.AoC.Fractal
 import Tests.AoC.Sporifica
 import Tests.AoC.Bridge
+import Tests.AoC.Turing
 
 main :: IO ()
 main = hspec $ do
@@ -39,3 +40,4 @@ main = hspec $ do
   describeFractal
   describeSporifica
   describeBridge
+  describeTuring

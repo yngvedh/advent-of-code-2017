@@ -1,6 +1,7 @@
 module AoC.Focus.List (
   ListFocus, makeFocus, makeFocusAt,
   moveRight, moveLeft, moveLeftMost,
+  appendRight, appendLeft,
   isLeftMost, isRightMost,
   set, get, update,
   focusElement,
@@ -37,6 +38,10 @@ isLeftMost _ = False
 
 isRightMost (ListFocus _ [p]) = True
 isRightMost _ = False
+
+appendRight, appendLeft :: a -> ListFocus a -> ListFocus a
+appendRight v (ListFocus pre post) = ListFocus pre (post++[v])
+appendLeft v (ListFocus pre post) = ListFocus (pre++[v]) post
 
 insertRightOf :: a -> ListFocus a -> ListFocus a
 insertRightOf a (ListFocus pre (p:post)) = ListFocus pre (p:a:post)
